@@ -29,6 +29,8 @@ def spec_to_dimensions(spec: dict) -> tuple[float, float, float, float]:
     height = float(dims.get("height", 4))
     unit = dims.get("unit", "inches")
     bleed = float(label.get("bleed", 0.125))
+    # Clamp bleed to a sane print range — spec values > 0.5" are likely errors
+    bleed = min(bleed, 0.5)
 
     # Convert to points (72pt / inch)
     if unit == "inches":
@@ -69,6 +71,8 @@ def build_svg(spec: dict, spec_id: str) -> str:
     height = float(dims.get("height", 4))
     unit = dims.get("unit", "inches")
     bleed = float(label.get("bleed", 0.125))
+    # Clamp bleed to a sane print range — spec values > 0.5" are likely errors
+    bleed = min(bleed, 0.5)
 
     content = spec.get("content", {})
     color = spec.get("color_palette", {})

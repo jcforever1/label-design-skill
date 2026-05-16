@@ -166,8 +166,30 @@ if __name__ == "__main__":
     elif args.cmd == "create":
         spec_id = generate_spec_id(args.brand, args.product, args.seed)
         spec_id = resolve_collision(spec_id)
-        path = write_spec({"brand": args.brand, "product": args.product}, spec_id)
-        print(f"Created: {spec_id} at {path}")
+        # Write a complete default spec so tests and validators have all keys
+        spec_data = {
+            "brand": args.brand,
+            "product": args.product,
+            "label": {
+                "type": "product",
+                "dimensions": {"width": 3.0, "height": 2.0, "unit": "inches"},
+                "bleed": 0.125,
+                "safe_zone": 0.25,
+                "material": {"finish": "gloss", "adhesive": "permanent"},
+            },
+            "design": {
+                "style": "modern-minimalist",
+                "color_profile": "CMYK",
+                "orientation": "portrait",
+            },
+            "content": {
+                "brand": args.brand,
+                "product": args.product,
+            },
+        }
+        path = write_spec(spec_data, spec_id)
+        print(spec_id)
+        print(f"Full path: {path}")
 
     elif args.cmd == "delete":
         ok = delete_spec(args.spec_id)
