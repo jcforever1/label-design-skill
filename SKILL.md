@@ -550,10 +550,20 @@ Accepts a reference image via one of three input methods, then runs the full 7-s
 - `--skip-template` — Run analysis only, skip template generation.
 - `--json` — Return full JSON output instead of formatted report.
 
+**Security constraints** (`reference_image_constraints`):
+
+| Constraint | Value |
+|---|---|
+| **Allowed formats** | PNG, JPG, JPEG, WebP, SVG (with sanitization), PDF (first page rasterized) |
+| **File size** | ≤ 10MB recommended |
+| **URL handling** | HTTPS only; block private network, localhost; 20s timeout |
+| **Base64** | Recommended 2–5MB max; API fallback only |
+| **Storage** | Preserve original, generate thumbnail, store analysis |
+
 **7-step pipeline:**
 
-1. **Ingest** — Accept path, URL, or Base64. Validate image reads without corruption.
-2. **Validate** — Check: file size ≤ 10MB, format (PNG/JPG/JPEG/WebP/GIF/BMP/TIFF), dimensions ≤ 4096px, readable as image.
+1. **Ingest** — Accept path, URL, or Base64. Validate image reads without corruption. URL sources verified as public HTTPS only; private networks and localhost blocked.
+2. **Validate** — Check: format against allowed list, file size ≤ 10MB, dimensions ≤ 4096px, readable as image. Base64 input decoded and validated. Reject non-HTTPS URLs.
 3. **Store copy** — Save to `labels/references/{spec_id}/original.{ext}`.
 4. **Analyze** — Extract: color palette (24-level quantization, top 6 dominant), layout (orientation, balance, grid detection), typography (weight, classification, caps indicator), micrographics (border detection, rules, pattern repetition), material (matte/glossy/kraft/metallic/glass/fabric scoring), style matches (top 3 from `lib/styles.yaml`), complexity level (minimal/standard/premium).
 5. **Originality filter** — Check against `lib/originality_filters.yaml` rules. Block: proprietary colors (brand blues/golds/reds), certification marks, official seals, barcodes. Warn: eco-green, kraft-brown. Also run 3 heuristic checks (high-saturation logo colors, bold caps logo text, center-logo composition).
