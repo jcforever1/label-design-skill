@@ -306,3 +306,17 @@ approaches:
       - "special release badge"
       - "micrographics"
     prompt_block: "Create a limited-edition collectible product label with numbered-release details, special edition styling, elevated artwork, premium finish cues, and a sense of rarity. Keep all claims truthful and avoid fake awards or fake collaborations."
+
+  - id: luxury-fragrance-inspired
+    name: "Luxury Fragrance-Inspired"
+    description: "Uses perfume-world visual language: notes, atmosphere, sensuality, restraint, and premium mystique."
+    best_with_styles: [candles, skincare, tea, perfume, chocolate, premium-beverages]
+    visual_direction:
+      - "scent note pyramid"
+      - "deep atmospheric palette"
+      - "elegant serif typography"
+      - "soft gradients"
+      - "glass-like reflections"
+      - "minimal label frame"
+      - "poetic descriptor line"
+    prompt_block: "Create a luxury fragrance-inspired label using refined perfume packaging cues: elegant typography, atmospheric color, scent-note hierarchy, premium whitespace, and a sensual high-end mood."
