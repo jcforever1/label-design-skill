@@ -414,3 +414,99 @@ approaches:
       - "clean ingredient section"
       - "simple product photography"
     prompt_block: "Create a bright clean-commerce product label with modern startup polish, friendly typography, optimistic color, clear information hierarchy, simple icon systems, and strong direct-to-consumer readability."
+
+# ---------------------------------------------------------------------------
+# Aesthetic Recommendation Engine
+# Maps product categories to 4 recommended aesthetic + approach combinations
+# ---------------------------------------------------------------------------
+aesthetic_recommendation_engine:
+  premium_skincare:
+    recommended:
+      - aesthetic: "Minimalism + Material-Led"
+        approach: "matte-paper-premium"
+      - aesthetic: "Japanese + Scientific Botanical"
+        approach: "botanical-organic"
+      - aesthetic: "Soft Futurism + Monochrome Premium"
+        approach: "soft-futurism"
+      - aesthetic: "Luxury Fragrance-Inspired + Dark Luxury"
+        approach: "luxury-fragrance-inspired"
+  artisan_food:
+    recommended:
+      - aesthetic: "Organic Artisan + Ingredient-Led"
+        approach: "kraft-natural-artisan"
+      - aesthetic: "Cottage Core + Regional Provenance"
+        approach: "regional-provenance"
+      - aesthetic: "Heritage Craft + Material-Led"
+        approach: "fabric-textile-authentic"
+      - aesthetic: "Boutique Editorial + Sensory Branding"
+        approach: "ritual-based"
+  functional_beverage:
+    recommended:
+      - aesthetic: "Bright Clean Commerce + Data Visualization"
+        approach: "bright-clean-commerce"
+      - aesthetic: "Neo 3D + Soft Futurism"
+        approach: "neo-3d"
+      - aesthetic: "Popping Colors + Shelf-Impact"
+        approach: "full-spectrum-vibrant"
+      - aesthetic: "Cyber Core + Architectural Grid"
+        approach: "architectural-grid"
+  supplements:
+    recommended:
+      - aesthetic: "Clinical Supplement + Data Visualization"
+        approach: "data-visualization-label-design"
+      - aesthetic: "Minimalism + Scientific Botanical"
+        approach: "subtle-grain"
+      - aesthetic: "Futuristic Tech + Micrographics"
+        approach: "monospace-technical"
+      - aesthetic: "Bright Clean Commerce + Modular Product Line"
+        approach: "modular-product-line-system"
+  luxury_food:
+    recommended:
+      - aesthetic: "Dark Luxury + Material-Led"
+        approach: "dark-luxury"
+      - aesthetic: "Neoclassical + Heritage Craft"
+        approach: "neoclassical"
+      - aesthetic: "Monochrome Premium + Metallic Typography"
+        approach: "metallic-foil-luxury"
+      - aesthetic: "Boutique Editorial + Ingredient-Led"
+        approach: "editorial-asymmetric"
+  coffee:
+    recommended:
+      - aesthetic: "Heritage Craft + Regional Provenance"
+        approach: "regional-provenance"
+      - aesthetic: "Boutique Editorial + Data Visualization"
+        approach: "data-visualization-label-design"
+      - aesthetic: "Brutalism + Architectural Grid"
+        approach: "brutalist-architectural"
+      - aesthetic: "Organic Artisan + Ingredient-Led"
+        approach: "kraft-natural-artisan"
+  candles:
+    recommended:
+      - aesthetic: "Luxury Fragrance-Inspired + Ritual-Based"
+        approach: "luxury-fragrance-inspired"
+      - aesthetic: "Romantasy + Dark Luxury"
+        approach: "romantasy-dark"
+      - aesthetic: "Cottage Core + Sensory Branding"
+        approach: "cottage-core-sensory"
+      - aesthetic: "Minimalism + Material-Led"
+        approach: "matte-paper-premium"
+  electronics:
+    recommended:
+      - aesthetic: "Futuristic Tech + Architectural Grid"
+        approach: "architectural-grid"
+      - aesthetic: "Cyber Core + Micrographics"
+        approach: "cyber-core-micrographics"
+      - aesthetic: "Minimalism + Monochrome Premium"
+        approach: "monochromatic-blue"
+      - aesthetic: "Y2K + Soft Futurism"
+        approach: "soft-futurism"
+  household_products:
+    recommended:
+      - aesthetic: "Bright Clean Commerce + Shelf-Impact"
+        approach: "bright-clean-commerce"
+      - aesthetic: "Flat + Eco-Systems"
+        approach: "flat-eco"
+      - aesthetic: "Bauhaus + Modular Product Line"
+        approach: "modular-product-line-system"
+      - aesthetic: "Neo-Brutalism + Data Visualization"
+        approach: "neo-brutalism-data"

@@ -370,6 +370,8 @@ To create your professional product label, please provide:
 
 8. **Design style:** — Choose from the 25-style library, upload a reference label, or request a recommendation. Options: Modern Minimalist, Luxury Premium, Eco-Friendly Natural, Bold Commercial, Vintage Artisan, Tech Futuristic, Japanese Minimalism, Scandinavian, Mediterranean, Art Deco, Retro Diner, Boho Handcrafted, High-Tech Industrial, Farm-to-Table, Boutique Elegance, Street Urban, Nautical Maritime, Candy Pop, Dark Moody, Fresh Scandinavian, Rustic Farmhouse, Chic Urban, Tropical Paradise, Clean Medical, Custom
 
+   **Recommendation engine active.** If product category was provided in step 3, use `lib/aesthetics.yaml` → `aesthetic_recommendation_engine` to auto-generate 2–3 suggested style + approach combinations for that category. Present these as quick-select options before the full menu, labeled: *"For [category], popular choices:"*
+
 9. **Advanced aesthetic approach (optional):** — Choose one for a deeper design strategy:
    - Material-Led
    - Ingredient-Led
