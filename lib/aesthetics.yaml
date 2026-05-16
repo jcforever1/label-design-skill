@@ -292,3 +292,19 @@ approaches:
       - "Consistent nutrition placement"
       - "Variant-specific illustration"
     prompt_block: "Create a modular product label system that can scale across multiple SKUs. Define fixed zones for brand, product name, legal copy, barcode, and nutrition facts, while allowing flexible zones for flavor, color, imagery, scent, strength, or formula variation."
+
+  - id: limited-edition-collectible
+    name: "Limited-Edition Collectible"
+    description: "The label feels rare, numbered, seasonal, collaborative, or collectible."
+    best_with_styles: [beverages, coffee, chocolate, candles, cosmetics, art-products, fashion-adjacent-goods]
+    visual_direction:
+      - "edition number"
+      - "artist-collaboration zone"
+      - "seasonal palette"
+      - "collectible illustration"
+      - "holographic accent"
+      - "special release badge"
+      - "micrographics"
+    prompt_block: "Create a limited-edition collectible product label with numbered-release details, special edition styling, elevated artwork, premium finish cues, and a sense of rarity. Keep all claims truthful and avoid fake awards or fake collaborations."
+
+approaches:
