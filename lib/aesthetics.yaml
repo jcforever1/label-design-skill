@@ -269,3 +269,12 @@ approaches:
     micrographics: None
     intensity: none
     best_with_styles: [modern-minimalist, luxury-premium, clean-medical, high-tech-industrial]
+
+  - id: transparent-label-system
+    name: "Transparent Label System"
+    description: "Product or container color becomes part of the label composition"
+    typography_mood: Clean Sans
+    best_with_styles: [modern-minimalist, luxury-premium, scandinavian]
+    color_strategy: Neutral + One Pop
+    material_cue: Glass
+    transparency_note: "Clear label stock with white ink layer; product-color-aware layout with floating logo effect"
