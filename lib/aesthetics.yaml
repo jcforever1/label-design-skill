@@ -349,3 +349,16 @@ approaches:
       - "origin story"
       - "harvest or batch date"
     prompt_block: "Create a regional provenance label that emphasizes product origin, geography, terroir, harvest context, and place-based storytelling. Use map-like linework, coordinates, regional color cues, and a premium origin-story layout."
+
+  - id: ritual-based
+    name: "Ritual-Based Design"
+    description: "The label frames the product as part of a daily ritual, ceremony, routine, or moment."
+    best_with_styles: [tea, coffee, skincare, supplements, candles, bath products, wellness products]
+    visual_direction:
+      - "step-based icons"
+      - "calm layout"
+      - "usage ritual copy"
+      - "morning/evening cues"
+      - "atmospheric color palette"
+      - "soft premium typography"
+    prompt_block: "Create a ritual-based product label that positions the product as part of a meaningful daily routine or sensory moment. Use calm hierarchy, usage cues, step icons, atmospheric color, and emotionally resonant but truthful copy."
