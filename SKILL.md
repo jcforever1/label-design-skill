@@ -47,6 +47,7 @@ Generates professional, print-ready product label designs across multiple sizes,
 | `/render-label spec_id=... format=PACKAGE` | Bundle all outputs |
 | `/render-label spec_id=... format=SVG --dry-run` | Preview render without writing files |
 | `/generate-nutrition-panel spec_id=... region=US_FDA` | Generate nutrition panel SVG |
+| `/nutrition-label spec_id=... ingredients=... region=US_FDA` | Generate nutrition panel from ingredient list |
 
 ---
 
@@ -443,6 +444,29 @@ Call: `python3 ~/.claude/skills/label-design/scripts/render_nutrition_panel.py <
 Output to: `renders/<spec_id>/nutrition-panel-<region>.svg`
 
 **Constraint:** Never generate actual nutrition values. Only render panel layout. Values come from user or authoritative source.
+
+---
+
+### `/nutrition-label`
+
+**Usage:** `/nutrition-label spec_id=<spec_id> ingredients=<json> region=<US_FDA|EU_1169|CA_CFIA|AU_FSANZ>`
+
+Generates a complete nutrition panel SVG from an ingredient list. The pipeline: (1) accept ingredients with weights, (2) web-search USDA FoodData Central (fdc.nal.usda.gov) for each ingredient, (3) user-confirms top-3 matches, (4) retrieve per-100g nutrient profile, (5) apply cooking method yield factor (USDA Table 4), (6) scale to serving size, (7) apply regulatory rounding rules (21 CFR 101.9(c) / EU Annex XV / CFIA / FSANZ), (8) calculate %DV/%RI/%DI, (9) flag FDA major allergens, (10) render panel SVG.
+
+**Arguments:**
+- `spec_id` — label spec to attach panel to
+- `ingredients` — JSON array of `{name, weight_g, cooking_method}` objects
+- `region` — format: `US_FDA`, `EU_1169`, `CA_CFIA`, or `AU_FSANZ`
+- `serving_size` — serving size string (optional, default: "1 cup (240ml)")
+- `servings_per_container` — string (optional, default: "8")
+
+**Script called:** `python3 ~/.claude/skills/label-design/scripts/nutrition_labelifier.py <spec_id> --region <region> --serving-size <size> --servings <n>`
+
+**Web search step:** For each ingredient, search `fdc.nal.usda.gov` for per-100g nutrient data. Surface top-3 matches for user confirmation before proceeding.
+
+**Allergen detection:** FDA major allergens (milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soybeans, sesame) detected from ingredient names and flagged in the panel.
+
+**Output:** `renders/<spec_id>/nutrition.svg`
 
 ---
 
