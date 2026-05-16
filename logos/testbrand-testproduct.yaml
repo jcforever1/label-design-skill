@@ -1,0 +1,67 @@
+brand: TestBrand
+product: TestProduct
+price_positioning: mid-market
+brand_personality: professional
+emotional_response: trust and confidence
+sales_channel: retail
+sections:
+  logo_type:
+    recommendation: Combination Mark
+    rationale: Text and symbol work together. Use when the brand needs maximum flexibility,
+      recognition, and future evolution. Best for new brands, growing product lines,
+      ecommerce-first products, retail packaging, and brands that may later simplify
+      to a standalone symbol.
+  icon_direction:
+    description: Avoid generic stock art; prefer ownable symbolic elements
+    visual_motif: Clean geometric, balanced hierarchy, professional finish
+  typography:
+    style: "Maximum 2\u20133 font families with strong hierarchy"
+    product_name: Bold display sans-serif or serif based on personality
+    body_legal: Clean sans-serif, minimum 6pt for legal text
+    brand_line: Light weight or small caps for secondary information
+  color_palette:
+    palette: Navy, white, warm gray, single accent color
+    note: Test all approved color versions for contrast and accessibility
+  mark_positioning:
+    primary: Within safe zone (0.25" from trim)
+    minimum_size: Do not reduce below 0.5" width on any axis
+    clear_space: Minimum equal to mark height on all sides
+  composition:
+    layout: Horizontal lockup preferred for label application
+    symbol_only: Permitted only if mark was designed for standalone recognition
+    orientation: "Do not rotate beyond \xB15\xB0 from horizontal or vertical axis"
+  restrictions:
+    forbidden:
+    - Do not stretch or distort the mark
+    - Do not recolor outside approved palette
+    - Do not add drop shadows unless part of official system
+    - Do not rotate the mark or word mark
+    - Do not use mascot or icon separately unless designed for standalone recognition
+    background_contrast: 'Light backgrounds: full-color or reversed. Dark backgrounds:
+      reversed (white) logo'
+  competitive:
+    positioning: Premium mid-market positioning
+    differentiation: Clear hierarchy, ownable mark, verified claims only
+  brand_architecture:
+    model: Branded House
+    description: One master brand supports multiple products or services. Use when
+      unity, trust transfer, cross-selling, and master-brand recognition are more
+      important than individual product independence.
+  scalability:
+    flavors: Product name fixed; variant name changes by flavor; color shifts by flavor
+    sizes: Proportional scaling; font sizes scale with label dimensions
+    premium_economy: Sub-brand names differentiate tiers
+    seasonal: Seasonal color palette applied within approved palette
+  production_notes:
+    bleed: 0.125" on all edges
+    safe_zone: 0.25" minimum content inset
+    dpi: 300 DPI minimum for raster elements
+    color_profile: CMYK for press, simulate on screen before approval
+    font_handling: Embed fonts or convert to outlines for production
+  ai_prompts:
+    logo_mark: 'Professional logo mark for TestBrand, style: Combination Mark, bold
+      geometric, clean lines, color palette: Navy, white, warm gray, single accent
+      color, transparent background'
+    label_mockup: 'Product label mockup for TestProduct, brand: TestBrand, premium
+      retail packaging, Navy, white, warm gray, single accent color, clean modern
+      design, photorealistic, white background'

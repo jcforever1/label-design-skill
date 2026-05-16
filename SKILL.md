@@ -352,18 +352,49 @@ Supported: `US_FDA`, `EU_1169`, `CA_CFIA`, `AU_FSANZ`
 
 **Wizard mode (no arguments):**
 
-Run as a 10-step conversational wizard. Ask one question at a time. Collect:
+To create your professional product label, please provide:
 
-1. **Brand name** — Ask: "What is the brand or company name for this label?"
-2. **Product name** — Ask: "What is the product name?"
-3. **Label dimensions** — Ask: "What are the label dimensions? (e.g., 3x2 in, 60x40mm, 2\" diameter)" Suggest standard sizes if needed.
-4. **Industry/product type** — Ask: "What industry or product category? (e.g., cosmetics, food beverage, health supplements, electronics, artisan crafts)"
-5. **Style** — Ask: "Which style direction? (Modern Minimalist, Luxury Premium, Eco-Friendly Natural, Bold Commercial, Vintage Artisan, Tech Futuristic, Japanese Minimalism, Scandinavian, Mediterranean, Art Deco, Retro Diner, Boho Handcrafted, High-Tech Industrial, Farm-to-Table, Boutique Elegance, Street Urban, Nautical Maritime, Candy Pop, Dark Moody, Fresh Scandinavian, Rustic Farmhouse, Chic Urban, Tropical Paradise, Clean Medical, Custom)" Show 25 options; recommend based on industry if clear.
-6. **Target region** — Ask: "What regulatory region? (US_FDA, EU_1169, CA_CFIA, AU_FSANZ, or multiple)"
-7. **Color preferences** — Ask: "Any color preferences or constraints? (e.g., must use kraft brown, avoid blue, prefer monochromatic)"
-8. **Key claim/certification** — Ask: "Any certifications or claims to display? (e.g., USDA Organic, Non-GMO, Vegan, Gluten-Free, Made in USA)" — warn if unverifiable
-9. **Barcode requirement** — Ask: "Does this need a barcode? (Yes/No/Placeholder only)"
-10. **Reference image** — Ask: "Do you have a reference image to analyze? (yes = path, no = skip)"
+1. **Product name:** — What is the product called?
+
+2. **Brand name:** — What is the brand or company name?
+
+3. **Product category:** — What industry or type? (e.g., cosmetics, food beverage, health supplements, electronics, artisan crafts)
+
+4. **Label size:** — What are the dimensions? (e.g., 3x2 in, 60x40mm, 2" diameter)
+
+5. **Target country or market:** — What regulatory region? (US_FDA, EU_1169, CA_CFIA, AU_FSANZ)
+
+6. **Required label elements:** — What must appear? (e.g., barcode, certifications, nutrition panel, ingredient list)
+
+7. **Do you need nutrition facts, supplement facts, ingredients, or allergen detection?** — (Yes/No or describe what you need)
+
+8. **Design style:** — Choose from the 25-style library, upload a reference label, or request a recommendation. Options: Modern Minimalist, Luxury Premium, Eco-Friendly Natural, Bold Commercial, Vintage Artisan, Tech Futuristic, Japanese Minimalism, Scandinavian, Mediterranean, Art Deco, Retro Diner, Boho Handcrafted, High-Tech Industrial, Farm-to-Table, Boutique Elegance, Street Urban, Nautical Maritime, Candy Pop, Dark Moody, Fresh Scandinavian, Rustic Farmhouse, Chic Urban, Tropical Paradise, Clean Medical, Custom
+
+9. **Advanced aesthetic approach (optional):** — Choose one for a deeper design strategy:
+   - Material-Led
+   - Ingredient-Led
+   - Sensory Branding
+   - Shelf-Impact
+   - Boutique Editorial
+   - Scientific Botanical
+   - Heritage Craft
+   - Eco-Systems
+   - Monochrome Premium
+   - Transparent Label
+   - Modular Product Line
+   - Limited Edition
+   - Luxury Fragrance-Inspired
+   - Data Visualization
+   - Regional Provenance
+   - Ritual-Based
+   - Architectural Grid
+   - Soft Futurism
+   - Dark Luxury
+   - Bright Clean Commerce
+
+10. **Would you like micrographics?** — None, Subtle, Moderate, or Heavy
+
+11. **Desired output format:** — SVG, PDF, PNG, mockup prompt, or complete design specification
 
 After collecting answers, call `scripts/spec_generator.py create` with all values. Present the generated spec ID. Ask if user wants to save, preview, or iterate.
 
