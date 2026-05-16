@@ -362,3 +362,16 @@ approaches:
       - "atmospheric color palette"
       - "soft premium typography"
     prompt_block: "Create a ritual-based product label that positions the product as part of a meaningful daily routine or sensory moment. Use calm hierarchy, usage cues, step icons, atmospheric color, and emotionally resonant but truthful copy."
+
+  - id: architectural-grid
+    name: "Architectural Grid"
+    description: "Uses structured grids, proportional spacing, alignment systems, and modular geometry as the visual foundation."
+    best_with_styles: [tech, supplements, skincare, coffee, premium food, home goods]
+    visual_direction:
+      - "visible grid logic"
+      - "alignment marks"
+      - "modular zones"
+      - "geometric dividers"
+      - "structured typography"
+      - "precision micrographics"
+    prompt_block: "Create an architectural-grid product label using modular spacing, proportional alignment, precise typography, visible structure, fine-line dividers, and controlled technical details. The label should feel engineered, calm, premium, and highly intentional."
