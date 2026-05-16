@@ -389,3 +389,15 @@ approaches:
       - "pastel metallics"
       - "clean sans-serif typography"
     prompt_block: "Create a soft-futurist product label with gentle gradients, frosted-glass cues, rounded geometry, refined typography, calm futuristic mood, and premium wellness-tech polish."
+
+  - id: dark-luxury
+    name: "Dark Luxury"
+    description: "Uses deep tones, restrained contrast, premium finishes, and dramatic whitespace."
+    best_with_styles: [coffee, chocolate, wine, candles, fragrance, skincare, supplements]
+    visual_direction:
+      - "deep atmospheric color"
+      - "refined contrast"
+      - "elegant typography"
+      - "premium foil or embossing cues"
+      - "sophisticated high-end shelf presence"
+    prompt_block: "Create a dark luxury product label with deep atmospheric color, refined contrast, elegant typography, premium foil or embossing cues, and a sophisticated high-end shelf presence."
