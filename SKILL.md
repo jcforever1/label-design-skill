@@ -576,7 +576,22 @@ Built-in templates (6): luxury-minimalist, organic-artisan, bold-retail-snack, c
 
 **Usage:** `/render-label spec_id=<spec_id> format=<SVG|PNG|JSON|PROMPT|PACKAGE> [--dry-run]`
 
-Resolve `spec_id` (handles aliases). Load spec data.
+**Spec resolution order** (applied in order, first match wins):
+
+1. **Explicit spec argument** — If `spec_id` is a full inline JSON or YAML document (starts with `{` or `---`), parse and use it directly. Example: `/render-label spec='{...}' format=SVG`
+
+2. **Project file** — Look for `specs/<spec_id>.yaml` or `specs/<spec_id>.json` in the skill directory. This is the canonical storage location.
+
+3. **Session index** — Check the current agent/session index for a `spec_id → file path` mapping created during active work. Use this for convenience during an ongoing session.
+
+4. **Approved spec registry** — Search `specs/` for specs with `status: approved` matching the spec_id. Also check `templates/` for reusable brand templates.
+
+5. **Error with recovery** — If not found in any location above, ask the user to:
+   - Pass the spec inline as JSON/YAML
+   - Restore the file from a known location
+   - Choose from a list of currently known specs (`/list-label-specs`)
+
+After resolution, load the spec data and call the appropriate renderer.
 
 Call appropriate renderer:
 - `SVG` → `scripts/render_svg.py`
