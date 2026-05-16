@@ -335,3 +335,17 @@ approaches:
       - "dosage timeline"
       - "roast profile graph"
     prompt_block: "Create a data-visualization-driven label that turns product information into clean visual diagrams, icons, scales, maps, charts, or profile systems. Keep all data truthful, user-provided, and clearly separated from regulatory nutrition facts."
+
+  - id: regional-provenance
+    name: "Regional Provenance"
+    description: "The label communicates where the product comes from and why that place matters."
+    best_with_styles: [coffee, tea, wine, olive-oil, honey, spices, chocolate, artisan-goods]
+    visual_direction:
+      - "map linework"
+      - "coordinates"
+      - "altitude or climate data"
+      - "region-inspired palette"
+      - "local texture"
+      - "origin story"
+      - "harvest or batch date"
+    prompt_block: "Create a regional provenance label that emphasizes product origin, geography, terroir, harvest context, and place-based storytelling. Use map-like linework, coordinates, regional color cues, and a premium origin-story layout."
