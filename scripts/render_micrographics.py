@@ -89,7 +89,7 @@ def _build_border_ornament(w: float, h: float, density: str) -> str:
     sw_minor = 0.25  # fine ticks
     sw_major = 0.5   # heavier border marks
 
-    if density == "minimal":
+    if density == "minimal" or density == "subtle":
         # Corner ticks only
         tick = 8
         for cx, cy in [(0, 0), (w, 0), (0, h), (w, h)]:
