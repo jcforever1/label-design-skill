@@ -9,6 +9,63 @@ micrographics_intensity:
   heavy:
     description: "Highly detailed technical visual system with dense micro labels, grids, codes, and symbol architecture."
 
+# Micrographics style treatments keyed by aesthetic style family
+micrographics_style_mapping:
+  Minimalism:
+    treatment: "Extremely restrained micro labels, tiny product reference codes, fine-line dividers, subtle corner markers."
+  Japanese:
+    treatment: "Quiet micro labels, delicate vertical notation, subtle grid alignment, small origin markers, restrained ink-like ticks."
+  Bauhaus:
+    treatment: "Functional micro labels, geometric marks, primary-color index dots, modular grid references."
+  Cyber_Core:
+    treatment: "Dense data strips, neon grid markers, glitch-safe micro symbols, coordinate labels, technical metadata."
+  Futuristic_Tech:
+    treatment: "Serial codes, QR-adjacent labels, specification markers, fine technical grids, precision alignment ticks."
+  Clinical_Supplement:
+    treatment: "Formula indexes, serving data tags, dosage markers, clean lab-style micro labels, supplement panel anchors."
+  Metallic_Typography:
+    treatment: "Non-metallic microcopy with metallic headline only; fine foil-like rules, luxury serial marks, edition numbering."
+  Neo_3D:
+    treatment: "Soft technical overlays, small dimensional markers, clean metadata strips, subtle interface-like labels."
+  Brutalism:
+    treatment: "Stark utility labels, heavy rule marks, raw index codes, blocky metadata zones."
+  Neo_Brutalism:
+    treatment: "Bold micro tags, outlined labels, hard-shadow data chips, visible grid coordinates."
+  Flat:
+    treatment: "Simple icon labels, clean small tags, vector micro symbols, bright functional marks."
+  Poster_Collage:
+    treatment: "Tiny editorial captions, print-registration references, faux cutline notes, layered annotation labels."
+  Indie_Groovy:
+    treatment: "Friendly tiny labels, playful batch tags, small wavy dividers, warm hand-coded details."
+  Vintage_80s:
+    treatment: "Retro serial labels, tiny neon grid coordinates, chrome-safe nonessential details."
+  Nineties_Editorial:
+    treatment: "Magazine-style captions, tiny issue codes, editorial metadata, crop-mark-like details."
+  Y2K:
+    treatment: "Glossy interface microcopy, tiny digital labels, bubble-like data chips, chrome-adjacent metadata."
+  Liquid_Retro:
+    treatment: "Small flowing labels, curved data strips, soft coordinate marks, subtle retro codes."
+  Font_Mixing:
+    treatment: "Micro typographic captions using one restrained type family to balance mixed headline fonts."
+  Hand_Drawn_Doodles:
+    treatment: "Tiny handwritten-style notes only if readable, sketchy arrows, small ingredient doodle labels."
+  Rubber_Hose:
+    treatment: "Minimal use; tiny cartoon-style labels and playful arrows without clutter."
+  Romantasy:
+    treatment: "Tiny ornamental annotations, celestial coordinate marks, delicate edition numbers, fine magical-but-safe symbols."
+  Pixel_Art:
+    treatment: "Pixel-style corner icons and decorative data chips, but never pixelate legal text."
+  Neoclassical:
+    treatment: "Fine engraved micro labels, small Roman-style index marks, delicate border inscriptions, symmetrical metadata."
+  Memphis:
+    treatment: "Tiny geometric markers, playful index dots, small shape labels, colorful micro accents."
+  Cottage_Core:
+    treatment: "Very light use; tiny batch note, origin tag, hand-labeled botanical markers."
+  Psychedelic:
+    treatment: "Use sparingly; tiny anchor labels and structured micro zones to balance expressive artwork."
+  Popping_Colors:
+    treatment: "Bright micro badges, tiny playful labels, high-contrast metadata chips."
+
 # 20 Advanced Aesthetic Approaches
 # Categories: typography_mood, color_strategy, material_cue, layout_principle, micrographics
 
