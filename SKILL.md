@@ -172,6 +172,83 @@ See `lib/aesthetics.yaml`. Categories:
 
 ---
 
+## Advanced Aesthetic Approaches
+
+Beyond the 25 design styles, these nine deeper visual systems guide how a label *thinks* — its material reality, emotional arc, cultural context, or shelf behavior. Use one as the primary creative driver, or combine with a style from the Quick Style Reference.
+
+### The Nine Approaches
+
+| # | Approach | What it means | Typical material cues |
+|---|----------|---------------|----------------------|
+| 1 | **Style-Led** | A definitive visual language drives every decision — typography, color, layout, texture. The style IS the product identity. | Varies by chosen style (e.g., metallic foil for luxury-premium, kraft natural for vintage-artisan) |
+| 2 | **Material-Led** | The physical substrate or print finish is the hero. Design serves to highlight — not obscure — the material: uncoated kraft, clear gloss, textured paper, embossed laminate, woven fabric. | Kraft Natural, Matte Paper, Glossy Plastic, Fabric, Glass Transparency |
+| 3 | **Story-Led** | Narrative arc or brand mythology shapes the layout — origin story, provenance, craft journey. Layout can feel editorial, illustrated, or documentary. | Varies; often hand-lettered or editorial-asymmetric |
+| 4 | **Premium-Finish-Led** | Gold foil, embossing, spot UV, holographic laminate, deboss — the production effect IS the design. Material selection and layout optimize the finish. | Metallic Foil, Glass Transparency, Matte Paper (as substrate) |
+| 5 | **Cultural-Mood-Led** | The label evokes a specific cultural context — Japanese minimalism, Mediterranean warmth, Scandinavian restraint, retro-nostalgia, Afrotropical color. Typography, color, and ornament serve the mood. | Varies by cultural frame; often matte paper or fabric |
+| 6 | **Shelf-Impact-Led** | Designed to stop the eye at 10 feet, read at 3 feet, and close the sale at arm's length. Bold hierarchy, high contrast, bold display typography, strong color blocking. | Bold Display, Full Spectrum Vibrant, Glossy Plastic |
+| 7 | **Collectible / Limited-Edition** | Designed to be kept, displayed, or collected. Numbered edition marks, unique visual signatures, premium materials, and visual "rare markers" that gain meaning in series. | Metallic Foil, Glass Transparency, Matte Paper Premium |
+| 8 | **Reference-Inspired Custom** | A specific reference artifact (vintage label, wine label, perfume bottle, sports drink, Japanese craft soda, pharmacy label) is analyzed and adapted for the product. | Chosen to match the reference's era and material feel |
+| 9 | **Hybrid** | Two or three approaches combined. Specify which ones and the intended relationship (e.g., "cultural-mood-led with shelf-impact-led energy" or "material-led substrate with story-led editorial layout"). | Varies by combination |
+
+### Integration with the Design Wizard
+
+These approaches can be selected at any decision point — but the most natural slot is **after style selection** in the `/label-design` wizard:
+
+```
+STEP 4 → Style selection (25 styles + Custom)
+    ↓
+STEP 4a → "Do you want to frame this label with a deeper visual system?"
+         [None] [Style-Led] [Material-Led] [Story-Led] [Premium-Finish-Led]
+                 [Cultural-Mood-Led] [Shelf-Impact-Led] [Collectible/Limited-Edition]
+                 [Reference-Inspired] [Hybrid → opens sub-prompt]
+```
+
+When an approach is selected, the wizard collects **one or two sentences of creative direction** (free text, not constrained) to guide spec generation. This direction:
+- Feeds the `creative_direction` field in the spec
+- Informs the aesthetic style selection
+- Can override default layout, color, or micrographics choices
+
+### Aesthetic Approach → Aesthetic Library Entries
+
+Each approach maps to one or more `approaches` entries in `lib/aesthetics.yaml`. The wizard uses this mapping to pre-filter or validate choices:
+
+| Approach | Relevant aesthetic approaches |
+|----------|----------------------------|
+| Style-Led | Any from the 25-style catalog; approach driven by selected style |
+| Material-Led | matte-paper-premium, glossy-plastic-urban, kraft-natural-artisan, metallic-foil-luxury, glass-transparent, fabric-textile-authentic |
+| Story-Led | editorial-asymmetric, hand-lettered, analogous-warm, refined-serif |
+| Premium-Finish-Led | metallic-foil-luxury, glass-transparent, matte-paper-premium, fine-lines-accent |
+| Cultural-Mood-Led | analogous-warm, neutral-one-pop, monochromatic-blue, subtle-grain, fine-lines-accent |
+| Shelf-Impact-Led | bold-display, full-spectrum-vibrant, complementary-contrast, glossy-plastic-urban |
+| Collectible/Limited-Edition | metallic-foil-luxury, glass-transparent, refined-serif, matte-paper-premium, fine-lines-accent |
+| Reference-Inspired Custom | contextual — determined by reference artifact analysis |
+| Hybrid | Determined by combination; validate against mapped approaches |
+
+### Spec Fields for Advanced Approaches
+
+When an approach is selected, the generated spec includes:
+
+```yaml
+approach:
+  primary: material-led        # one of the 9 approaches
+  secondary: shelf-impact-led  # optional, for hybrid
+  creative_direction: >-
+    A crisp white label on clear PET bottle with a single deep-blue
+    geometric wave running the full height. Minimal text. The material
+    IS the design — transparency as texture.
+  aesthetic_style: clean-sans   # validated against approach mapping
+```
+
+### Reference-Inspired Custom Labels
+
+When the user selects Reference-Inspired Custom:
+1. Ask for a reference artifact description OR offer to analyze a reference image
+2. If analyzing an image: use `/analyze-reference-label` workflow
+3. Extract: era/style, material feel, color palette, typography character, layout structure
+4. Generate spec adapted to the product's own identity (not a copy)
+
+---
+
 ## Nutrition Panel Regions
 
 Supported: `US_FDA`, `EU_1169`, `CA_CFIA`, `AU_FSANZ`
