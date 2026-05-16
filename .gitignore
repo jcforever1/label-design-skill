@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Skill-specific
+specs/*.yaml
+renders/
+references/
+templates/
+*.log
+
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node (if any)
+node_modules/
+package-lock.json
