@@ -293,27 +293,219 @@ def scale_to_serving(nutrients: NutritionFacts, serving_g: float, total_g: float
     nutrients.protein_g = scale(nutrients.protein_g)
     nutrients.vitamin_d_mcg = scale(nutrients.vitamin_d_mcg)
     nutrients.calcium_mg = scale(nutrients.calcium_mg)
-    nutrients.iron_mg = scale(nutrients.iron_mcg) if hasattr(nutrients, 'iron_mcg') else scale(nutrients.calcium_mg * 0.01)
+    nutrients.iron_mg = scale(nutrients.iron_mg)
     nutrients.potassium_mg = scale(nutrients.potassium_mg)
     return nutrients
 
 
-# ─── Web search placeholder ─────────────────────────────────────────────────
+# ─── Web search ───────────────────────────────────────────────────────────────
 
-def search_usda_food(food_name: str) -> list[dict]:
+FDC_API_KEY_ENV = "USDA_FDC_API_KEY"
+FDC_API_BASE = "https://api.nal.usda.gov/fdc/v1"
+
+
+def _get_api_key() -> str | None:
+    import os
+    return os.environ.get(FDC_API_KEY_ENV)
+
+
+def search_usda_food(food_name: str, api_key: str | None = None) -> list[dict]:
     """
-    Search USDA FoodData Central via web.
-    Returns list of {fdc_id, description, category, per_100g: dict}.
-    In production this would call the web search; here returns structured
-    placeholder matches for demo purposes — caller should web-search
-    fdc.nal.usda.gov for live data.
+    Search USDA FoodData Central via the official API.
+
+    Args:
+        food_name: raw ingredient name (e.g. "Apple, raw")
+        api_key: FDC API key; falls back to USDA_FDC_API_KEY env var
+
+    Returns:
+        list of matched food dicts, each containing:
+          - fdc_id (str)
+          - description (str)
+          - category (str)
+          - per_100g (dict of nutrient symbol → value)
+          - confidence (float 0–1)
+
+    Raises:
+        requests.HTTPError: on API error with a non-empty body
     """
-    # Placeholder: caller should WebSearch for:
-    # "site:fdc.nal.usda.gov {food_name} nutrition facts per 100g"
+    key = api_key or _get_api_key()
+    if not key:
+        return _search_usda_food_web_fallback(food_name)
+
+    import urllib.request, urllib.parse, json
+
+    url = f"{FDC_API_BASE}/foods/search"
+    params = urllib.parse.urlencode({
+        "api_key": key,
+        "query": food_name,
+        "pageSize": 10,
+        "dataType": ["SR Legacy", "Branded"],
+        "sortBy": "dataType.keyword",
+        "sortOrder": "asc",
+    })
+    req = urllib.request.Request(f"{url}?{params}")
+    req.add_header("Accept", "application/json")
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        if e.code == 403 or e.code == 401:
+            return _search_usda_food_web_fallback(food_name)
+        raise
+
+    foods = data.get("foods", [])
+    matches = []
+    for item in foods:
+        fdc_id = str(item.get("fdcId", ""))
+        desc = item.get("description", "")
+        category = ""
+        if item.get("foodCategory"):
+            category = item["foodCategory"].get("description", "")
+
+        # Build per-100g nutrient dict
+        per_100g = {}
+        for ng in item.get("foodNutrients", []):
+            num = ng.get("nutrientNumber", "")
+            val = ng.get("value")
+            if val is None:
+                continue
+            unit = ng.get("unitName", "")
+            attr = _fdc_nutrient_map().get(num, "")
+            if attr and unit in ("g", "mg", "mcg", "IU"):
+                per_100g[attr] = val
+
+        # Confidence: prefer SR Legacy over Branded, prefer exact name match
+        confidence = 0.70
+        if "foodNutrientId" not in str(item):  # branded
+            confidence = 0.60
+
+        matches.append({
+            "fdc_id": fdc_id,
+            "description": desc,
+            "category": category,
+            "per_100g": per_100g,
+            "confidence": confidence,
+        })
+
+    matches.sort(key=lambda m: m["confidence"], reverse=True)
+    return matches[:10]
+
+
+def _fdc_nutrient_map() -> dict[str, str]:
+    return {
+        "208": "calories",
+        "204": "fat",
+        "205": "carbohydrate",
+        "291": "fiber",
+        "269": "sugars",
+        "203": "protein",
+        "301": "calcium",
+        "303": "iron",
+        "304": "potassium",
+        "307": "sodium",
+        "601": "cholesterol",
+        "605": "trans_fat",
+        "606": "saturated_fat",
+        "324": "vitamin_d",
+    }
+
+
+def _search_usda_food_web_fallback(food_name: str) -> list[dict]:
+    """
+    Web-search fallback when no API key is configured.
+    Returns empty list — caller handles gracefully.
+    """
     return []
 
 
 # ─── Aggregate nutrients ─────────────────────────────────────────────────────
+
+def confirm_fdc_match(
+    ingredient_name: str,
+    candidates: list[dict],
+    threshold: float = 0.85,
+) -> str | None:
+    """
+    Present FDC search candidates to user and return the selected fdc_id.
+
+    Args:
+        ingredient_name: the ingredient being matched
+        candidates: list of FDC match dicts (fdc_id, description, category, confidence)
+        threshold: minimum confidence to auto-accept without asking (default 0.85)
+
+    Returns:
+        Selected fdc_id str, or None if user skipped / no match.
+    """
+    if not candidates:
+        return None
+
+    # Auto-accept if confidence is above threshold
+    top = candidates[0]
+    if top.get("confidence", 0) >= threshold:
+        return top["fdc_id"]
+
+    # Surface candidates for disambiguation
+    print(f"\n⚠ Ambiguous match for '{ingredient_name}':")
+    print(f"   Top candidate: {top['description'][:80]} (confidence {top.get('confidence', 0):.2f})")
+    print("   Candidates:")
+    for i, c in enumerate(candidates[:5]):
+        print(f"     [{i+1}] {c['fdc_id']} — {c['description'][:60]}")
+        print(f"         category={c.get('category','')} confidence={c.get('confidence',0):.2f}")
+    print("   Enter a number to select, or 's' to skip this ingredient.")
+
+    try:
+        choice = input("Selection: ").strip().lower()
+        if choice == "s":
+            return None
+        idx = int(choice) - 1
+        if 0 <= idx < len(candidates):
+            return candidates[idx]["fdc_id"]
+    except (ValueError, EOFError):
+        pass
+
+    return None
+
+
+def _aggregate_single_ingredient(
+    ing: Ingredient,
+    api_key: str | None = None,
+) -> tuple[NutritionFacts, float, str | None]:
+    """
+    Look up a single ingredient via FDC, return (NutritionFacts, total_g, fdc_id).
+    Uses web search fallback when no API key is available.
+    Falls back to default nutrition values when no FDC entry is found.
+    """
+    if ing.matched_fdc_id:
+        # Already confirmed by user — direct lookup
+        try:
+            entry = _lookup_fdc_id(ing.matched_fdc_id, api_key)
+            if entry:
+                return entry, entry.get("_weight_g", 100.0), ing.matched_fdc_id
+        except Exception:
+            pass
+
+    # Search FDC
+    matches = search_usda_food(ing.name, api_key)
+    if not matches:
+        # Fall back to default nutrition
+        return _default_nutrition(ing.name), 100.0, None
+
+    # Check if top match is good enough to auto-confirm
+    top = matches[0]
+    confirmed_id = confirm_fdc_match(ing.name, matches)
+
+    if confirmed_id:
+        try:
+            entry = _lookup_fdc_id(confirmed_id, api_key)
+            if entry:
+                return entry, entry.get("_weight_g", 100.0), confirmed_id
+        except Exception:
+            pass
+
+    # User skipped or lookup failed — use top match as estimate
+    fdc_id = top.get("fdc_id")
+    return _fdc_to_nutrition(top.get("per_100g", {})), 100.0, fdc_id
+
 
 def aggregate_nutrients(ingredients: list[Ingredient]) -> tuple[NutritionFacts, float]:
     """
@@ -399,6 +591,55 @@ def build_nutrition_params(
     }
 
 
+def _write_nutrition_json(
+    spec_id: str,
+    facts: NutritionFacts,
+    region: str,
+    serving_size: str,
+    servings_per_container: str,
+    params: dict,
+    allergens: list[str],
+) -> Path | None:
+    """Write structured nutrition facts JSON to renders/{spec_id}/nutrition_facts.json."""
+    import json
+    RENDERS_DIR = SKILL_DIR / "renders" / spec_id
+    out_path = RENDERS_DIR / "nutrition_facts.json"
+    try:
+        RENDERS_DIR.mkdir(parents=True, exist_ok=True)
+        data = {
+            "spec_id": spec_id,
+            "region": region,
+            "serving_size": serving_size,
+            "servings_per_container": servings_per_container,
+            "source_db_ids": facts.source_db_ids,
+            "estimate_note": facts.estimate_note or None,
+            "allergens_detected": allergens,
+            "nutrients": {
+                "calories_g": facts.calories,
+                "total_fat_g": facts.total_fat_g,
+                "saturated_fat_g": facts.saturated_fat_g,
+                "trans_fat_g": facts.trans_fat_g,
+                "cholesterol_mg": facts.cholesterol_mg,
+                "sodium_mg": facts.sodium_mg,
+                "total_carbohydrate_g": facts.total_carbohydrate_g,
+                "dietary_fiber_g": facts.dietary_fiber_g,
+                "total_sugars_g": facts.total_sugars_g,
+                "added_sugars_g": facts.added_sugars_g,
+                "protein_g": facts.protein_g,
+                "vitamin_d_mcg": facts.vitamin_d_mcg,
+                "calcium_mg": facts.calcium_mg,
+                "iron_mg": facts.iron_mg,
+                "potassium_mg": facts.potassium_mg,
+            },
+            "display_values": params,
+        }
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        return out_path
+    except Exception:
+        return None
+
+
 def render_labelifier_panel(
     spec_id: str,
     ingredients: list[Ingredient],
@@ -422,8 +663,25 @@ def render_labelifier_panel(
                 ingredients[i].cooking_method = method
                 apply_cooking_yield(ingredients[i])
 
-    # Aggregate
-    facts, total_g = aggregate_nutrients(ingredients)
+    # Wire new per-ingredient FDC lookup + disambiguation pipeline
+    combined = NutritionFacts()
+    total_g = 0.0
+    for ing in ingredients:
+        facts_i, w_i, fdc_id = _aggregate_single_ingredient(ing, _USDA_FDC_API_KEY)
+        scale = w_i / 100.0
+        for attr in [
+            "calories", "total_fat_g", "saturated_fat_g", "trans_fat_g",
+            "cholesterol_mg", "sodium_mg", "total_carbohydrate_g",
+            "dietary_fiber_g", "total_sugars_g", "added_sugars_g",
+            "protein_g", "vitamin_d_mcg", "calcium_mg", "iron_mg", "potassium_mg",
+        ]:
+            setattr(combined, attr, getattr(combined, attr) + getattr(facts_i, attr) * scale)
+        total_g += w_i
+        if fdc_id and fdc_id not in combined.source_db_ids:
+            combined.source_db_ids.append(fdc_id)
+        if facts_i.estimate_note:
+            combined.estimate_note = facts_i.estimate_note
+    facts = combined
 
     # Detect allergens
     ingredient_names = [ing.name for ing in ingredients]
@@ -443,8 +701,14 @@ def render_labelifier_panel(
     )
 
     # Import and call render_nutrition_panel
-    from scripts.render_nutrition_panel import render_nutrition_panel as render_panel
+    import importlib.util
+    _mod = importlib.import_module("scripts.render_nutrition_panel")
+    render_panel = _mod.render_nutrition_panel
     path = render_panel(spec_id, **params, dry_run=dry_run)
+
+    # Write structured JSON output
+    _write_nutrition_json(spec_id, facts, region, serving_size,
+                          servings_per_container, params, allergens)
 
     disclaimer = (
         f"Source: USDA FoodData Central. "
