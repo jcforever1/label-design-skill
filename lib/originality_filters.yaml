@@ -1,0 +1,92 @@
+# Originality Filter Rules
+# Flags elements that must NOT be copied from reference images.
+# Each rule has: id, type, category, severity, message, condition
+
+rules:
+  - id: "logo_color_blue"
+    type: "color_match"
+    category: "proprietary_colors"
+    severity: "block"
+    message: "Brand blue detected — Pantone-matched proprietary color. Do not replicate."
+    condition:
+      hex: "#0066CC"
+      threshold: 35
+
+  - id: "logo_color_gold"
+    type: "color_match"
+    category: "proprietary_colors"
+    severity: "warn"
+    message: "Metallic gold/bronze detected — common luxury brand colorway. Shift hue or desaturate."
+    condition:
+      hex: "#D4AF37"
+      threshold: 40
+
+  - id: "logo_color_red"
+    type: "color_match"
+    category: "proprietary_colors"
+    severity: "warn"
+    message: "Brand red detected — highly saturated red may be trademarked. Verify independently."
+    condition:
+      hex: "#E31837"
+      threshold: 35
+
+  - id: "green_eco"
+    type: "color_match"
+    category: "certification_claim"
+    severity: "warn"
+    message: "Eco-green detected — may imply organic/sustainable certification that cannot be claimed without verification."
+    condition:
+      hex: "#228B22"
+      threshold: 45
+
+  - id: " Kraft_brown"
+    type: "color_match"
+    category: "material_misrepresentation"
+    severity: "info"
+    message: "Kraft paper tone detected — if actual product is not kraft, do not simulate kraft aesthetic."
+    condition:
+      hex: "#C4A35A"
+      threshold: 50
+
+  - id: "official_seal"
+    type: "pattern_match"
+    category: "certification_claim"
+    severity: "block"
+    message: "Official seal, certification mark, or government logo detected. Never replicate."
+    pattern:
+      - "seal"
+      - "certified"
+      - "official"
+      - "government"
+
+  - id: "barcode_detection"
+    type: "structure_match"
+    category: "proprietary_data"
+    severity: "block"
+    message: "Barcode detected — do not replicate UPC/GTIN data from reference label."
+    condition:
+      min_barcode_width_ratio: 0.3
+      aspect_ratio_range: [2.0, 8.0]
+
+# General guidance per category
+category_guidance:
+  logo:
+    guidance: "Extract brand archetype and mood only. Never replicate logo artwork, wordmarks, or combination marks."
+
+  proprietary_colors:
+    guidance: "Shift hues by minimum 15°. Do not use colorimetrically identical values. Note: color perception varies by print method."
+
+  composition:
+    guidance: "Use reference layout as structural inspiration only. Reposition elements to create distinct composition."
+
+  slogan:
+    guidance: "Slogans are IP. Extract linguistic register and rhythm — do not reproduce text."
+
+  trade_dress:
+    guidance: "Trade dress (unique product shape, color combo, texture) is IP. Analyze only for inspiration, not replication."
+
+  certification_claim:
+    guidance: "Do not imply certifications (USDA Organic, Non-GMO, Fair Trade, etc.) unless product actually carries them."
+
+  proprietary_artwork:
+    guidance: "Photographs and illustrations are copyright. Describe style/genre, do not reproduce."

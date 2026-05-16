@@ -532,17 +532,43 @@ Display as a table: spec_id | brand | product | status | created_at | version
 
 ### `/analyze-reference-label`
 
-**Usage:** `/analyze-reference-label path="<path_to_image>"`
+**Usage:** `/analyze-reference-label input="<path_or_url_or_base64>" [--spec-id <spec_id>] [--template-name <name>] [--skip-template]`
 
-Call `scripts/reference_analyzer.py` with the provided image path.
+Accepts a reference image via one of three input methods, then runs the full 7-step reference analysis pipeline to extract aesthetic DNA and generate a legally distinct reusable template.
 
-Extract and report:
-- Dominant color palette (3-5 colors with hex)
-- Typography mood (serif, sans, display, etc.)
-- Layout style (center-weighted, grid, asymmetric, etc.)
-- Micrographics present (borders, patterns, ornaments, etc.)
-- Visual complexity level (minimal, standard, premium)
-- Suggested style matches from `lib/styles.yaml`
+**Input methods** (`reference_image_inputs`):
+
+| Method | Example | Best For |
+|--------|---------|----------|
+| **File path** | `input="/Users/jcforever1/Downloads/label.png"` | Local reference images |
+| **URL** | `input="https://example.com/label.jpg"` | Web-hosted references |
+| **Base64** | `input="data:image/png;base64,iVBORw0KG..."` | Copied/pasted images |
+
+**Options:**
+- `--spec-id` — Attach analysis to an existing spec. If omitted, a new spec_id is generated (format: `{brand_slug}-{product_slug}-{6char_hash}`).
+- `--template-name` — Name for the generated template YAML (e.g., `my-brand-template`). Stored in `lib/label_templates/<name>.yaml`.
+- `--skip-template` — Run analysis only, skip template generation.
+- `--json` — Return full JSON output instead of formatted report.
+
+**7-step pipeline:**
+
+1. **Ingest** — Accept path, URL, or Base64. Validate image reads without corruption.
+2. **Validate** — Check: file size ≤ 10MB, format (PNG/JPG/JPEG/WebP/GIF/BMP/TIFF), dimensions ≤ 4096px, readable as image.
+3. **Store copy** — Save to `labels/references/{spec_id}/original.{ext}`.
+4. **Analyze** — Extract: color palette (24-level quantization, top 6 dominant), layout (orientation, balance, grid detection), typography (weight, classification, caps indicator), micrographics (border detection, rules, pattern repetition), material (matte/glossy/kraft/metallic/glass/fabric scoring), style matches (top 3 from `lib/styles.yaml`), complexity level (minimal/standard/premium).
+5. **Originality filter** — Check against `lib/originality_filters.yaml` rules. Block: proprietary colors (brand blues/golds/reds), certification marks, official seals, barcodes. Warn: eco-green, kraft-brown. Also run 3 heuristic checks (high-saturation logo colors, bold caps logo text, center-logo composition).
+6. **Generate template** — Create legally distinct palette via HSV hue rotation (8–30° shift, saturation reduction on highly saturated colors). Output template YAML with `color_palette`, `micrographics`, `layout_principles`, `material_cues`.
+7. **Attach to spec** — Write `reference_analysis.yaml` to `labels/references/{spec_id}/`. Symlink from `renders/{spec_id}/reference_analysis.yaml`.
+
+**Output:** Formatted report with:
+- Color palette (hex + RGB + percentage)
+- Layout analysis (orientation, balance, grid)
+- Typography mood (weight, classification, caps)
+- Material inference (top scoring)
+- Style matches (top 3 with scores)
+- Complexity level
+- Originality flags (blocked/warned items)
+- Generated template name (if `--skip-template` not set)
 
 Offer to create a spec based on extracted aesthetic DNA.
 
