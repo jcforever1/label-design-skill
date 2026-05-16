@@ -278,3 +278,17 @@ approaches:
     color_strategy: Neutral + One Pop
     material_cue: Glass
     transparency_note: "Clear label stock with white ink layer; product-color-aware layout with floating logo effect"
+
+  - id: modular-product-line-system
+    name: "Modular Product Line System"
+    description: "Creates a flexible label architecture that can scale across multiple variants."
+    best_with_styles: [beverages, supplements, skincare, snacks, coffee, candles, sauces]
+    visual_direction:
+      - "Fixed brand zone"
+      - "Variable color band"
+      - "Flavor icon system"
+      - "SKU code zone"
+      - "Reusable grid"
+      - "Consistent nutrition placement"
+      - "Variant-specific illustration"
+    prompt_block: "Create a modular product label system that can scale across multiple SKUs. Define fixed zones for brand, product name, legal copy, barcode, and nutrition facts, while allowing flexible zones for flavor, color, imagery, scent, strength, or formula variation."
