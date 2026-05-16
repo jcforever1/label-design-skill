@@ -16,6 +16,8 @@ import sys
 import yaml
 from pathlib import Path
 
+from render_micrographics import render_micrographics_layer
+
 SKILL_DIR = Path.home() / ".claude" / "skills" / "label-design"
 SPECS_DIR = SKILL_DIR / "specs"
 RENDERS_DIR = SKILL_DIR / "renders"
@@ -161,7 +163,17 @@ def build_svg(spec: dict, spec_id: str) -> str:
     <!-- Trim box -->
     <rect x="{b_pt:.2f}" y="{b_pt:.2f}" width="{w_pt:.2f}" height="{h_pt:.2f}"/>
   </g>
+
+  <!-- LAYER: micrographics -->
+  <g id="micrographics">
+    <!-- micrographics layer injected here -->
+  </g>
 </svg>"""
+
+    layer = render_micrographics_layer(spec, w_pt, h_pt, b_pt, aw, ah)
+    if layer:
+        svg = svg.replace("<!-- micrographics layer injected here -->", layer)
+
     return svg
 
 

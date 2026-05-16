@@ -48,6 +48,8 @@ Generates professional, print-ready product label designs across multiple sizes,
 | `/render-label spec_id=... format=SVG --dry-run` | Preview render without writing files |
 | `/generate-nutrition-panel spec_id=... region=US_FDA` | Generate nutrition panel SVG |
 | `/nutrition-label spec_id=... ingredients=... region=US_FDA` | Generate nutrition panel from ingredient list |
+| `/logo-design` | Logo type diagnosis and brand architecture |
+| `/logo-design generate brand="X" product="Y" --category ...` | Generate full 12-section logo strategy |
 
 ---
 
@@ -467,6 +469,59 @@ Generates a complete nutrition panel SVG from an ingredient list. The pipeline: 
 **Allergen detection:** FDA major allergens (milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soybeans, sesame) detected from ingredient names and flagged in the panel.
 
 **Output:** `renders/<spec_id>/nutrition.svg`
+
+---
+
+### `/logo-design`
+
+**Usage:**
+
+```
+/logo-design diagnose <brand> <product> [--category <category>] [--audience <audience>]
+/logo-design generate --brand <brand> --product <product> [--category <category>] [--audience <audience>] [--price_position <position>] [--brand_personality <personality>] [--emotional_response <response>] [--sales_channel <channel>] [--parent_brand <brand>] [--portfolio_size <size>] [--required_claims <claims>]
+/logo-design brief <brand> <product> [--category <category>]
+```
+
+**Purpose:** Logo type diagnosis, brand architecture analysis, and full 12-section logo strategy generation using brand first principles.
+
+**Subcommands:**
+
+- `diagnose` — Analyze brand/product and recommend logo type classification, mark positioning strategy, and brand architecture decisions. Output: text + YAML summary with logo type, strategy rationale, and category-matched design direction.
+
+- `generate` — Produce complete 12-section logo strategy document:
+  1. Logo Type Recommendation
+  2. Icon/Symbol Direction
+  3. Typography Direction
+  4. Color Palette Direction
+  5. Mark Positioning Strategy
+  6. Composition Rules
+  7. Restriction List
+  8. Competitive Landscape
+  9. Brand Architecture Mapping
+  10. Scalability Requirements
+  11. Production Notes
+  12. AI Image Generation Prompts
+
+- `brief` — Abbreviated 4-section brief (Logo Type, Icon/Symbol, Typography, Color) using `--category` to bias recommendations.
+
+**Arguments:**
+- `brand` — Brand name (positional for diagnose/brief)
+- `product` — Product name (positional for diagnose/brief)
+- `--category` — Product category: food, beverage, supplement, beauty, health, household, tech, apparel, sport, pet, other
+- `--audience` — Target demographic: mainstream, kids, fitness, clinical, luxury, GenZ, senior, professional
+- `--price_position` — Pricing tier: budget, value, midmarket, premium, luxury
+- `--brand_personality` — Personality keywords (5 core traits): playful, serious, luxurious, minimal, bold, warm, cool, scientific, artisanal, bold, edgy
+- `--emotional_response` — Desired emotional outcome: trust, excitement, calm, aspiration, fun, authority, warmth, sophistication, energy, mystery
+- `--sales_channel` — Primary channel: retail, ecommerce, foodservice, clinic, gym, salon, direct-to-consumer, wholesale
+- `--parent_brand` — Parent brand name if sub-brand or brand extension (optional)
+- `--portfolio_size` — Number of SKUs in portfolio: single, small (2–10), medium (11–50), large (51–500), enterprise (500+)
+- `--required_claims` — Regulatory or marketing claims that must be supported: organic, non-gmo, kosher, halal, vegan, gluten-free, none
+
+**Script called:** `python3 ~/.claude/skills/label-design/scripts/logo_generator.py <subcommand> ...`
+
+**Output:** Text printed to conversation + YAML written to `~/.claude/skills/label-design/logos/<brand_slug>-<product_slug>.yaml`
+
+**Constraint:** Does not generate raster images. Use `generate` output as input to image generation tools (Midjourney, DALL-E, Firefly, etc.).
 
 ---
 
