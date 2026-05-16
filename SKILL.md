@@ -174,55 +174,114 @@ See `lib/aesthetics.yaml`. Categories:
 
 ## Advanced Aesthetic Approaches
 
-Beyond the 25 design styles, these nine deeper visual systems guide how a label *thinks* — its material reality, emotional arc, cultural context, or shelf behavior. Use one as the primary creative driver, or combine with a style from the Quick Style Reference.
+When creating a product label, do not limit the user to surface-level design styles. Offer advanced aesthetic approaches that define the deeper design strategy.
 
-### The Nine Approaches
+### The 21 Advanced Aesthetic Approaches
 
-| # | Approach | What it means | Typical material cues |
-|---|----------|---------------|----------------------|
-| 1 | **Style-Led** | A definitive visual language drives every decision — typography, color, layout, texture. The style IS the product identity. | Varies by chosen style (e.g., metallic foil for luxury-premium, kraft natural for vintage-artisan) |
-| 2 | **Material-Led** | The physical substrate or print finish is the hero. Design serves to highlight — not obscure — the material: uncoated kraft, clear gloss, textured paper, embossed laminate, woven fabric. | Kraft Natural, Matte Paper, Glossy Plastic, Fabric, Glass Transparency |
-| 3 | **Story-Led** | Narrative arc or brand mythology shapes the layout — origin story, provenance, craft journey. Layout can feel editorial, illustrated, or documentary. | Varies; often hand-lettered or editorial-asymmetric |
-| 4 | **Premium-Finish-Led** | Gold foil, embossing, spot UV, holographic laminate, deboss — the production effect IS the design. Material selection and layout optimize the finish. | Metallic Foil, Glass Transparency, Matte Paper (as substrate) |
-| 5 | **Cultural-Mood-Led** | The label evokes a specific cultural context — Japanese minimalism, Mediterranean warmth, Scandinavian restraint, retro-nostalgia, Afrotropical color. Typography, color, and ornament serve the mood. | Varies by cultural frame; often matte paper or fabric |
-| 6 | **Shelf-Impact-Led** | Designed to stop the eye at 10 feet, read at 3 feet, and close the sale at arm's length. Bold hierarchy, high contrast, bold display typography, strong color blocking. | Bold Display, Full Spectrum Vibrant, Glossy Plastic |
-| 7 | **Collectible / Limited-Edition** | Designed to be kept, displayed, or collected. Numbered edition marks, unique visual signatures, premium materials, and visual "rare markers" that gain meaning in series. | Metallic Foil, Glass Transparency, Matte Paper Premium |
-| 8 | **Reference-Inspired Custom** | A specific reference artifact (vintage label, wine label, perfume bottle, sports drink, Japanese craft soda, pharmacy label) is analyzed and adapted for the product. | Chosen to match the reference's era and material feel |
-| 9 | **Hybrid** | Two or three approaches combined. Specify which ones and the intended relationship (e.g., "cultural-mood-led with shelf-impact-led energy" or "material-led substrate with story-led editorial layout"). | Varies by combination |
+Ask the user:
+
+**Would you like the label to be driven primarily by:**
+
+1. **Visual style** — A definitive visual language (Minimalism, Japanese, Bauhaus, Cyber Core, etc.) drives every decision.
+2. **Material and finish** — The physical substrate or print finish is the hero: kraft, gloss, matte, textured paper, embossed laminate.
+3. **Ingredient or flavor** — The product's own ingredient palette or flavor profile shapes the visual direction.
+4. **Sensory experience** — Texture, scent, sound, or ritual sensation informs the design language.
+5. **Retail shelf impact** — Designed to stop the eye at 10 ft, read at 3 ft, close the sale at arm's length.
+6. **Editorial sophistication** — Magazine-style hierarchy, editorial typography, journalistic confidence.
+7. **Scientific or botanical precision** — Lab-clean data, botanical illustration, clinical accuracy.
+8. **Heritage craft** — Artisan technique, provenance storytelling, handcrafted authenticity.
+9. **Sustainability and material honesty** — Raw, truthful materials; eco-conscious finishes; no greenwashing.
+10. **Monochrome premium restraint** — Single-hue discipline, elegant restraint, premium simplicity.
+11. **Transparent label interaction** — Product color or container becomes part of the label composition.
+12. **Modular product-line scalability** — Fixed brand zones, flexible variant areas, scalable across many SKUs.
+13. **Limited-edition collectibility** — Numbered releases, rare markers, premium materials that gain meaning in series.
+14. **Fragrance-inspired atmosphere** — Perfume-world visual language: notes, sensuality, restraint, premium mystique.
+15. **Data visualization** — Charts, scales, maps, diagrams turn product information into visual structure.
+16. **Regional provenance** — Origin, terroir, place-based storytelling with map-like linework and coordinates.
+17. **Ritual or routine** — Frames the product as part of a daily ritual, ceremony, or meaningful moment.
+18. **Architectural grid structure** — Modular spacing, proportional alignment, precise typography, engineered calm.
+19. **Soft futurism** — Futuristic but calm, human, refined; not aggressive.
+20. **Dark luxury** — Deep tones, restrained contrast, premium finishes, dramatic whitespace.
+21. **Bright clean-commerce clarity** — Modern DTC startup polish, friendly clarity, optimistic color, UX-like hierarchy.
+
+**The user may combine one primary visual style from the 25-style library with one advanced aesthetic approach.**
+
+Example combinations:
+- Minimalism + Material-Led
+- Japanese + Scientific Botanical
+- Cyber Core + Architectural Grid
+- Cottage Core + Regional Provenance
+- Metallic Typography + Dark Luxury
+- Flat + Bright Clean Commerce
+- Neoclassical + Heritage Craft
+- Neo 3D + Soft Futurism
+- Organic Artisan + Ingredient-Led
+- Bauhaus + Data Visualization
+
+### Defining an Advanced Aesthetic Approach
+
+For each selected aesthetic approach, define:
+
+| Dimension | What it means |
+|-----------|---------------|
+| **Strategic purpose** | Why this approach serves the product's goals |
+| **Layout implications** | Zone arrangement, hierarchy, grid logic |
+| **Typography implications** | Font family, weight, scale, pairing strategy |
+| **Color implications** | Palette strategy, accent usage, contrast needs |
+| **Material and finish implications** | Substrate, print finish, tactile quality |
+| **Micrographics usage** | Density, placement, what micro-details communicate |
+| **Nutrition facts treatment** | Panel style, placement, integration with layout |
+| **Barcode treatment** | Zone placement, quiet zone, scannability |
+| **Regulatory copy treatment** | Font size, hierarchy, integration with design |
+| **AI generation prompt block** | Ready-to-use prompt for image/vector generation |
+| **Negative prompt block** | What to avoid in AI generation |
 
 ### Integration with the Design Wizard
 
-These approaches can be selected at any decision point — but the most natural slot is **after style selection** in the `/label-design` wizard:
+These approaches are selected **after style selection** in the `/label-design` wizard:
 
 ```
 STEP 4 → Style selection (25 styles + Custom)
     ↓
-STEP 4a → "Do you want to frame this label with a deeper visual system?"
-         [None] [Style-Led] [Material-Led] [Story-Led] [Premium-Finish-Led]
-                 [Cultural-Mood-Led] [Shelf-Impact-Led] [Collectible/Limited-Edition]
-                 [Reference-Inspired] [Hybrid → opens sub-prompt]
+STEP 4a → "Would you like the label to be driven primarily by a deeper visual system?"
+         [See 21 options above — user picks one, or skips]
+    ↓
+STEP 4b → (If advanced aesthetic selected)
+          "Describe the creative direction in 1–2 sentences."
+          [Free text — e.g., 'Crisp white label on clear PET bottle with a
+           single deep-blue geometric wave running the full height.
+           The material IS the design — transparency as texture.']
 ```
 
-When an approach is selected, the wizard collects **one or two sentences of creative direction** (free text, not constrained) to guide spec generation. This direction:
-- Feeds the `creative_direction` field in the spec
-- Informs the aesthetic style selection
-- Can override default layout, color, or micrographics choices
+When an approach is selected, the creative direction feeds the spec's `creative_direction` field, informs `aesthetic_style` selection, and can override defaults for layout, color, or micrographics.
 
-### Aesthetic Approach → Aesthetic Library Entries
+### Aesthetic Approach → `lib/aesthetics.yaml` Entries
 
-Each approach maps to one or more `approaches` entries in `lib/aesthetics.yaml`. The wizard uses this mapping to pre-filter or validate choices:
+Each approach maps to one or more entries in `lib/aesthetics.yaml`. The wizard uses this mapping to pre-filter or validate:
 
-| Approach | Relevant aesthetic approaches |
-|----------|----------------------------|
-| Style-Led | Any from the 25-style catalog; approach driven by selected style |
-| Material-Led | matte-paper-premium, glossy-plastic-urban, kraft-natural-artisan, metallic-foil-luxury, glass-transparent, fabric-textile-authentic |
-| Story-Led | editorial-asymmetric, hand-lettered, analogous-warm, refined-serif |
-| Premium-Finish-Led | metallic-foil-luxury, glass-transparent, matte-paper-premium, fine-lines-accent |
-| Cultural-Mood-Led | analogous-warm, neutral-one-pop, monochromatic-blue, subtle-grain, fine-lines-accent |
-| Shelf-Impact-Led | bold-display, full-spectrum-vibrant, complementary-contrast, glossy-plastic-urban |
-| Collectible/Limited-Edition | metallic-foil-luxury, glass-transparent, refined-serif, matte-paper-premium, fine-lines-accent |
-| Reference-Inspired Custom | contextual — determined by reference artifact analysis |
-| Hybrid | Determined by combination; validate against mapped approaches |
+| Approach | Relevant aesthetic approaches in `lib/aesthetics.yaml` |
+|----------|------------------------------------------------------|
+| Visual style | Driven by selected style from 25-style catalog |
+| Material and finish | matte-paper-premium, glossy-plastic-urban, kraft-natural-artisan, metallic-foil-luxury, glass-transparent, fabric-textile-authentic |
+| Ingredient or flavor | determined by product's ingredient palette |
+| Sensory experience | determined by product's sensory character |
+| Retail shelf impact | bold-display, full-spectrum-vibrant, complementary-contrast, glossy-plastic-urban |
+| Editorial sophistication | editorial-asymmetric, hand-lettered, analogous-warm, refined-serif |
+| Scientific or botanical precision | clean-sans, monochromatic-blue, fine-lines-accent, subtle-grain |
+| Heritage craft | hand-lettered, analogous-warm, fabric-textile-authentic, kraft-natural-artisan |
+| Sustainability and material honesty | kraft-natural-artisan, matte-paper-premium, fabric-textile-authentic, subtle-grain |
+| Monochrome premium restraint | monochromatic-blue, refined-serif, clean-sans |
+| Transparent label interaction | glass-transparent, neutral-one-pop |
+| Modular product-line scalability | modular-product-line-system |
+| Limited-edition collectibility | limited-edition-collectible, metallic-foil-luxury, glass-transparent, refined-serif |
+| Fragrance-inspired atmosphere | luxury-fragrance-inspired, soft-futurism |
+| Data visualization | data-visualization-label-design, monospace-technical |
+| Regional provenance | regional-provenance, hand-lettered |
+| Ritual or routine | ritual-based, soft-futurism |
+| Architectural grid structure | architectural-grid, grid-strict-precision |
+| Soft futurism | soft-futurism, neutral-one-pop |
+| Dark luxury | dark-luxury, metallic-foil-luxury, refined-serif |
+| Bright clean-commerce clarity | bright-clean-commerce, clean-sans |
 
 ### Spec Fields for Advanced Approaches
 
@@ -230,22 +289,14 @@ When an approach is selected, the generated spec includes:
 
 ```yaml
 approach:
-  primary: material-led        # one of the 9 approaches
-  secondary: shelf-impact-led  # optional, for hybrid
+  primary: material-and-finish    # one of the 21 approaches
+  secondary: retail-shelf-impact  # optional, for combined strategy
   creative_direction: >-
     A crisp white label on clear PET bottle with a single deep-blue
     geometric wave running the full height. Minimal text. The material
     IS the design — transparency as texture.
-  aesthetic_style: clean-sans   # validated against approach mapping
+  aesthetic_style: clean-sans      # validated against approach mapping
 ```
-
-### Reference-Inspired Custom Labels
-
-When the user selects Reference-Inspired Custom:
-1. Ask for a reference artifact description OR offer to analyze a reference image
-2. If analyzing an image: use `/analyze-reference-label` workflow
-3. Extract: era/style, material feel, color palette, typography character, layout structure
-4. Generate spec adapted to the product's own identity (not a copy)
 
 ---
 
