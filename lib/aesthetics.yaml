@@ -375,3 +375,17 @@ approaches:
       - "structured typography"
       - "precision micrographics"
     prompt_block: "Create an architectural-grid product label using modular spacing, proportional alignment, precise typography, visible structure, fine-line dividers, and controlled technical details. The label should feel engineered, calm, premium, and highly intentional."
+
+  - id: soft-futurism
+    name: "Soft Futurism"
+    description: "Futuristic but calm, human, refined, and premium."
+    best_with_styles: [skincare, supplements, beverages, tech accessories, wellness products]
+    visual_direction:
+      - "soft gradients"
+      - "frosted glass effects"
+      - "rounded geometry"
+      - "gentle glow"
+      - "minimal iconography"
+      - "pastel metallics"
+      - "clean sans-serif typography"
+    prompt_block: "Create a soft-futurist product label with gentle gradients, frosted-glass cues, rounded geometry, refined typography, calm futuristic mood, and premium wellness-tech polish."
