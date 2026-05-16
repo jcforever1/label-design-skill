@@ -1,3 +1,14 @@
+# Micrographics density levels
+micrographics_intensity:
+  none:
+    description: "No micrographics."
+  subtle:
+    description: "Tiny alignment marks, small codes, fine dividers, minimal precision details."
+  moderate:
+    description: "Visible technical labels, grid accents, small data strips, mini icons, structured border details."
+  heavy:
+    description: "Highly detailed technical visual system with dense micro labels, grids, codes, and symbol architecture."
+
 # 20 Advanced Aesthetic Approaches
 # Categories: typography_mood, color_strategy, material_cue, layout_principle, micrographics
 
