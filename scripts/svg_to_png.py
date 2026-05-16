@@ -14,6 +14,7 @@ from pathlib import Path
 
 SKILL_DIR = Path.home() / ".claude" / "skills" / "label-design"
 RENDERS_DIR = SKILL_DIR / "renders"
+SPECS_DIR = SKILL_DIR / "specs"
 
 DPI = 300
 
@@ -40,10 +41,44 @@ def svg_to_png_cairo(svg_path: Path, png_path: Path, dpi: int = DPI) -> bool:
     try:
         import cairosvg
 
+        # Get dimensions from the spec YAML — the SVG's own width/height
+        # attributes may be wrong (e.g. 201x200 instead of 3x2). Pull the
+        # spec_id from the renders directory structure:
+        # renders/<spec_id>/label.svg  →  spec_id = parent dir name
+        spec_id = svg_path.parent.name
+        spec_path = SPECS_DIR / f"{spec_id}.yaml"
+        if spec_path.exists():
+            import yaml
+            with open(spec_path, encoding="utf-8") as f:
+                spec = yaml.safe_load(f)
+            dims = spec.get("label", {}).get("dimensions", {})
+            w_in = float(dims.get("width", 3.0))
+            h_in = float(dims.get("height", 2.0))
+        else:
+            # Fallback: parse SVG attribute (may still be wrong, let Cairo fail)
+            with open(svg_path, encoding="utf-8") as f:
+                svg_text = f.read()
+            import re
+            w_match = re.search(r'width="([0-9.]+)in"', svg_text)
+            h_match = re.search(r'height="([0-9.]+)in"', svg_text)
+            if w_match and h_match:
+                w_in = float(w_match.group(1))
+                h_in = float(h_match.group(1))
+            else:
+                w_in = h_in = None
+
+        if w_in is not None and h_in is not None:
+            output_w = int(w_in * dpi)
+            output_h = int(h_in * dpi)
+        else:
+            output_w = output_h = None
+
         cairosvg.svg2png(
             url=str(svg_path),
             write_to=str(png_path),
             dpi=dpi,
+            output_width=output_w,
+            output_height=output_h,
         )
         return True
     except Exception as e:
