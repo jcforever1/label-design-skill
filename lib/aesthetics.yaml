@@ -320,3 +320,18 @@ approaches:
       - "minimal label frame"
       - "poetic descriptor line"
     prompt_block: "Create a luxury fragrance-inspired label using refined perfume packaging cues: elegant typography, atmospheric color, scent-note hierarchy, premium whitespace, and a sensual high-end mood."
+
+  - id: data-visualization-label-design
+    name: "Data-Visualization Label Design"
+    description: "Turns product information into visual structure through charts, icons, scales, maps, or diagrams."
+    best_with_styles: [supplements, coffee, tea, functional-beverages, skincare, tech-products]
+    visual_direction:
+      - "flavor radar chart"
+      - "origin map"
+      - "strength scale"
+      - "ingredient ratio bar"
+      - "caffeine meter"
+      - "scent pyramid"
+      - "dosage timeline"
+      - "roast profile graph"
+    prompt_block: "Create a data-visualization-driven label that turns product information into clean visual diagrams, icons, scales, maps, charts, or profile systems. Keep all data truthful, user-provided, and clearly separated from regulatory nutrition facts."
