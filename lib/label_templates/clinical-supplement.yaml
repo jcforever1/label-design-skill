@@ -1,0 +1,88 @@
+# Label Template: Clinical Supplement
+# For vitamins, supplements, and health products
+# Style: Clean medical, trust-building, precise information
+
+name: clinical-supplement
+description: Clinical supplement label for vitamins, minerals, and health supplements. Clean medical aesthetic, trust-building design.
+industry: health_supplements
+recommended_regions: [US_FDA, EU_1169, CA_CFIA]
+
+design_tokens:
+  color_palette:
+    primary: "#0077B6"        # Medical blue
+    secondary: "#F0F8FF"       # Alice blue
+    accent: "#00B4D8"        # Bright cyan
+    text_dark: "#1A1A1A"
+    text_light: "#4A5568"
+    background: "#FFFFFF"
+
+  typography:
+    brand_name:
+      font_family: "Roboto"
+      weight: 700
+      size: 18
+      tracking: 0.08em
+      style: "uppercase"
+    product_name:
+      font_family: "Roboto"
+      weight: 500
+      size: 14
+      style: "titlecase"
+    tagline:
+      font_family: "Roboto"
+      weight: 300
+      size: 9
+      tracking: 0.05em
+      style: "uppercase"
+    body:
+      font_family: "Roboto"
+      weight: 400
+      size: 7
+      line_height: 1.5
+    supplement_facts:
+      font_family: "Roboto Mono"
+      weight: 400
+      size: 6.5
+
+  spacing:
+    base_unit: 4
+    section_gap: 16
+    inner_padding: 12
+    safe_zone: 8
+
+  border:
+    style: "thin-rule"
+    accent_line: true
+    accent_position: left
+
+micrographics:
+  level: minimal
+  permitted: subtle cross or health symbol watermark
+  prohibited_zones: [supplement-facts, allergen-statement]
+  recommended_types: [fine-lines]
+
+layout:
+  structure:
+    - zone: brand-zone
+      position: top-left
+      width: 50%
+    - zone: product-name
+      position: top-right
+      width: 48%
+    - zone: supplement-facts-panel
+      position: center
+      height: auto
+    - zone: allergen-statement
+      position: bottom-left
+      height: auto
+    - zone: regulatory-text
+      position: bottom
+      height: auto
+
+compliance:
+  allergen_highlight: bold
+  allergen_format: "Contains: {list}"
+  nutrition_declaration: required
+  supplement_facts_box: true
+  dosage_instructions: required
+  cautions_statement: required

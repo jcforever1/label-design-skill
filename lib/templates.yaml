@@ -1,0 +1,225 @@
+# Label Design Templates — 6 Built-in Reusable Specs
+# These are starting points, not final designs. All fields can be overridden.
+
+templates:
+  - id: premium-beverage
+    name: "Premium Beverage"
+    description: "Minimalist label for premium bottled drinks — water, sparkling water, kombucha"
+    category: beverage
+    style: modern-minimalist
+    aesthetic:
+      typography_mood: Clean Sans
+      color_strategy: Monochromatic
+      material_cue: Matte Paper
+      layout_principle: Center-Weighted
+      micrographics: None
+    label:
+      type: product
+      dimensions:
+        width: 4
+        height: 3
+        unit: inches
+      bleed: 0.125
+      safe_zone: 0.25
+    content:
+      front:
+        brand_zone: top-center
+        product_name: center
+        net_volume: bottom-left
+        barcode_zone: bottom-right
+      back:
+        nutrition_panel: full-width
+        ingredients: below nutrition
+        barcode: bottom-right
+    color_palette:
+      primary: "#1E3A5F"
+      secondary: "#7FB3D3"
+      accent: "#E8F4F8"
+      text_dark: "#1A1A1A"
+      text_light: "#FFFFFF"
+
+  - id: artisan-food
+    name: "Artisan Food"
+    description: "Vintage-inspired label for handmade preserves, jams, and specialty foods"
+    category: food
+    style: vintage-artisan
+    aesthetic:
+      typography_mood: Hand-Lettered
+      color_strategy: Analogous
+      material_cue: Kraft Natural
+      layout_principle: Asymmetric Calm
+      micrographics: Fine Lines
+    label:
+      type: product
+      dimensions:
+        width: 3
+        height: 4
+        unit: inches
+      bleed: 0.125
+      safe_zone: 0.25
+    content:
+      front:
+        brand_zone: top-left
+        product_name: center-left
+        net_volume: bottom-left
+        barcode_zone: bottom-right
+      back:
+        nutrition_panel: full-width
+        ingredients: below nutrition
+        allergen_statement: below ingredients
+        barcode: bottom-right
+    color_palette:
+      primary: "#8B4513"
+      secondary: "#D2691E"
+      accent: "#F5DEB3"
+      text_dark: "#2C1810"
+      text_light: "#FFF8F0"
+
+  - id: luxury-cosmetics
+    name: "Luxury Cosmetics"
+    description: "Gold-accented label for premium skincare, serums, and beauty products"
+    category: cosmetics
+    style: luxury-premium
+    aesthetic:
+      typography_mood: Refined Serif
+      color_strategy: Neutral + One Pop
+      material_cue: Metallic Foil
+      layout_principle: Editorial Asymmetric
+      micrographics: None
+    label:
+      type: product
+      dimensions:
+        width: 2.5
+        height: 2.5
+        unit: inches
+      bleed: 0.125
+      safe_zone: 0.25
+    content:
+      front:
+        brand_zone: top-center
+        product_name: center
+        net_volume: bottom-left
+        barcode_zone: bottom-right
+      back:
+        ingredients: full-width
+        allergen_statement: below ingredients
+        barcode: bottom-right
+    color_palette:
+      primary: "#1A1A1A"
+      secondary: "#C9A962"
+      accent: "#F5F5F5"
+      text_dark: "#1A1A1A"
+      text_light: "#FFFFFF"
+
+  - id: organic-natural
+    name: "Organic Natural"
+    description: "Earth-toned label for organic foods, natural cleaning, and eco-friendly products"
+    category: household
+    style: eco-friendly-natural
+    aesthetic:
+      typography_mood: Clean Sans
+      color_strategy: Analogous
+      material_cue: Kraft Natural
+      layout_principle: Asymmetric Calm
+      micrographics: Botanical
+    label:
+      type: product
+      dimensions:
+        width: 3.5
+        height: 2.5
+        unit: inches
+      bleed: 0.125
+      safe_zone: 0.25
+    content:
+      front:
+        brand_zone: top-left
+        product_name: center-left
+        net_volume: bottom-left
+        barcode_zone: bottom-right
+      back:
+        nutrition_panel: full-width
+        ingredients: below nutrition
+        allergen_statement: below ingredients
+        barcode: bottom-right
+    color_palette:
+      primary: "#4A6741"
+      secondary: "#8FBC8F"
+      accent: "#F5F5DC"
+      text_dark: "#2C3E2C"
+      text_light: "#FEFEFA"
+
+  - id: bold-retail
+    name: "Bold Retail"
+    description: "High-impact label for energy drinks, snacks, and retail shelf presence"
+    category: beverage
+    style: bold-commercial
+    aesthetic:
+      typography_mood: Bold Display
+      color_strategy: Full Spectrum
+      material_cue: Glossy Plastic
+      layout_principle: Grid-Strict
+      micrographics: Geometric
+    label:
+      type: product
+      dimensions:
+        width: 3
+        height: 4
+        unit: inches
+      bleed: 0.125
+      safe_zone: 0.25
+    content:
+      front:
+        brand_zone: top-center
+        product_name: center
+        flavor_variant: below product name
+        net_volume: bottom-left
+        barcode_zone: bottom-right
+      back:
+        nutrition_panel: full-width
+        ingredients: below nutrition
+        allergen_statement: below ingredients
+        barcode: bottom-right
+    color_palette:
+      primary: "#FF4500"
+      secondary: "#FFD700"
+      accent: "#1E90FF"
+      text_dark: "#1A1A1A"
+      text_light: "#FFFFFF"
+
+  - id: clean-medical
+    name: "Clean Medical"
+    description: "Clinical label for supplements, first-aid, and health-related products"
+    category: health
+    style: clean-medical
+    aesthetic:
+      typography_mood: Clean Sans
+      color_strategy: Monochromatic
+      material_cue: Matte Paper
+      layout_principle: Grid-Strict
+      micrographics: None
+    label:
+      type: product
+      dimensions:
+        width: 3
+        height: 3
+        unit: inches
+      bleed: 0.125
+      safe_zone: 0.25
+    content:
+      front:
+        brand_zone: top-center
+        product_name: center
+        net_volume: bottom-left
+        barcode_zone: bottom-right
+      back:
+        nutrition_panel: full-width
+        ingredients: below nutrition
+        allergen_statement: below ingredients
+        manufacturer_details: bottom
+        barcode: bottom-right
+    color_palette:
+      primary: "#0077B6"
+      secondary: "#90E0EF"
+      accent: "#FFFFFF"
+      text_dark: "#1A1A1A"
+      text_light: "#FFFFFF"

@@ -1,0 +1,203 @@
+# 20 Advanced Aesthetic Approaches
+# Categories: typography_mood, color_strategy, material_cue, layout_principle, micrographics
+
+approaches:
+
+  - id: refined-serif
+    name: "Refined Serif"
+    description: "Elegant serif typography for premium and editorial aesthetics"
+    typography_mood: Refined Serif
+    best_with_styles: [luxury-premium, art-deco, boutique-elegance, mediterranean]
+    color_strategy: Neutral + One Pop
+    material_cue: Metallic Foil
+
+  - id: clean-sans
+    name: "Clean Sans"
+    description: "Modern sans-serif typography for clarity and functionality"
+    typography_mood: Clean Sans
+    best_with_styles: [modern-minimalist, scandinavian, fresh-scandinavian, clean-medical]
+    color_strategy: Monochromatic
+    material_cue: Matte Paper
+
+  - id: monospace-technical
+    name: "Monospace Technical"
+    description: "Technical monospace for precision and futuristic aesthetics"
+    typography_mood: Monospace Technical
+    best_with_styles: [tech-futuristic, high-tech-industrial, chic-urban]
+    color_strategy: Monochromatic
+    material_cue: Glossy Plastic
+
+  - id: hand-lettered
+    name: "Hand-Lettered"
+    description: "Hand-crafted lettering for artisanal and authentic feel"
+    typography_mood: Hand-Lettered
+    best_with_styles: [vintage-artisan, boho-handcrafted, farm-to-table, rustic-farmhouse]
+    color_strategy: Analogous
+    material_cue: Kraft Natural
+
+  - id: bold-display
+    name: "Bold Display"
+    description: "High-impact display typography for maximum shelf presence"
+    typography_mood: Bold Display
+    best_with_styles: [bold-commercial, street-urban, candy-pop, retro-diner]
+    color_strategy: Full Spectrum
+    material_cue: Glossy Plastic
+
+  - id: monochromatic-blue
+    name: "Monochromatic Blue"
+    description: "Single-hue palette with blue as the dominant tone"
+    color_strategy: Monochromatic
+    palette: [deep_navy, sky_blue, pale_ice, white]
+    best_with_styles: [modern-minimalist, tech-futuristic, nautical-maritime]
+    typography_mood: Clean Sans
+
+  - id: complementary-contrast
+    name: "Complementary Contrast"
+    description: "Opposite hues on color wheel for maximum contrast and energy"
+    color_strategy: Complementary
+    palette: [black, white, coral, teal]
+    best_with_styles: [bold-commercial, street-urban, tropical-paradise]
+    typography_mood: Bold Display
+
+  - id: analogous-warm
+    name: "Analogous Warm"
+    description: "Adjacent warm hues for cohesive and inviting feel"
+    color_strategy: Analogous
+    palette: [terracotta, cream, sage_green, warm_brown]
+    best_with_styles: [mediterranean, rustic-farmhouse, boho-handcrafted]
+    typography_mood: Hand-Lettered
+
+  - id: neutral-one-pop
+    name: "Neutral + One Pop"
+    description: "Muted base with a single vibrant accent color"
+    color_strategy: Neutral + One Pop
+    palette: [cream, charcoal, coral_accent]
+    best_with_styles: [modern-minimalist, scandinavian, chic-urban, boutique-elegance]
+    typography_mood: Refined Serif
+
+  - id: full-spectrum-vibrant
+    name: "Full Spectrum Vibrant"
+    description: "Multi-hue saturated palette for playful and energetic brands"
+    color_strategy: Full Spectrum
+    palette: [bright_pink, yellow, blue, green, orange]
+    best_with_styles: [candy-pop, bold-commercial, tropical-paradise]
+    typography_mood: Bold Display
+
+  - id: matte-paper-premium
+    name: "Matte Paper Premium"
+    description: "Uncoated paper texture with soft colors for premium organic feel"
+    material_cue: Matte Paper
+    best_with_styles: [eco-friendly-natural, vintage-artisan, farm-to-table, scandinavian]
+    color_strategy: Analogous
+
+  - id: glossy-plastic-urban
+    name: "Glossy Plastic Urban"
+    description: "High-gloss finish with bold colors for urban retail impact"
+    material_cue: Glossy Plastic
+    best_with_styles: [bold-commercial, street-urban, tech-futuristic]
+    color_strategy: Full Spectrum
+
+  - id: kraft-natural-artisan
+    name: "Kraft Natural Artisan"
+    description: "Natural kraft paper texture with earth tones for authentic craftsmanship"
+    material_cue: Kraft Natural
+    best_with_styles: [eco-friendly-natural, boho-handcrafted, rustic-farmhouse, vintage-artisan]
+    color_strategy: Analogous
+
+  - id: metallic-foil-luxury
+    name: "Metallic Foil Luxury"
+    description: "Gold or silver foil accents on premium materials"
+    material_cue: Metallic Foil
+    best_with_styles: [luxury-premium, art-deco, boutique-elegance, high-tech-industrial]
+    color_strategy: Neutral + One Pop
+
+  - id: glass-transparent
+    name: "Glass Transparency"
+    description: "Clear or tinted glass material suggestion for beverages and cosmetics"
+    material_cue: Glass
+    best_with_styles: [luxury-premium, modern-minimalist, japanese-minimalism]
+    color_strategy: Monochromatic
+
+  - id: fabric-textile-authentic
+    name: "Fabric Textile Authentic"
+    description: "Woven or linen texture for artisanal and heritage products"
+    material_cue: Fabric
+    best_with_styles: [vintage-artisan, farm-to-table, rustic-farmhouse]
+    color_strategy: Analogous
+
+  - id: center-weighted-balance
+    name: "Center-Weighted Balance"
+    description: "Symmetrical layout with focal point at center"
+    layout_principle: Center-Weighted
+    best_with_styles: [luxury-premium, art-deco, boutique-elegance, clean-medical]
+    material_cue: Matte Paper
+
+  - id: asymmetric-calm
+    name: "Asymmetric Calm"
+    description: "Off-center composition creating dynamic but calm balance"
+    layout_principle: Asymmetric Calm
+    best_with_styles: [japanese-minimalism, modern-minimalist, scandinavian]
+    material_cue: Matte Paper
+
+  - id: grid-strict-precision
+    name: "Grid-Strict Precision"
+    description: "Rigid grid-based layout for technical and industrial clarity"
+    layout_principle: Grid-Strict
+    best_with_styles: [high-tech-industrial, tech-futuristic, clean-medical]
+    material_cue: Glossy Plastic
+
+  - id: editorial-asymmetric
+    name: "Editorial Asymmetric"
+    description: "Magazine-style asymmetric layout with strong hierarchy"
+    layout_principle: Editorial Asymmetric
+    best_with_styles: [modern-minimalist, scandinavian, chic-urban]
+    material_cue: Matte Paper
+
+  - id: dense-information
+    name: "Dense Information"
+    description: "Compact layout maximizing information density for regulatory compliance"
+    layout_principle: Dense Information
+    best_with_styles: [clean-medical, high-tech-industrial]
+    material_cue: Glossy Plastic
+
+  - id: subtle-grain
+    name: "Subtle Grain"
+    description: "Fine noise texture adding tactile quality without distraction"
+    micrographics: Subtle Grain
+    intensity: minimal
+    best_with_styles: [modern-minimalist, vintage-artisan, eco-friendly-natural]
+
+  - id: fine-lines-accent
+    name: "Fine Lines Accent"
+    description: "Delicate line work for geometric elegance"
+    micrographics: Fine Lines
+    intensity: minimal
+    best_with_styles: [art-deco, luxury-premium, scandinavian]
+
+  - id: geometric-patterns
+    name: "Geometric Patterns"
+    description: "Repeating geometric shapes for modern structured aesthetic"
+    micrographics: Geometric
+    intensity: standard
+    best_with_styles: [tech-futuristic, art-deco, modern-minimalist]
+
+  - id: botanical-organic
+    name: "Botanical Organic"
+    description: "Natural botanical illustrations adding organic warmth"
+    micrographics: Botanical
+    intensity: standard
+    best_with_styles: [eco-friendly-natural, farm-to-table, boho-handcrafted, mediterranean]
+
+  - id: wave-patterns-fluid
+    name: "Wave Patterns Fluid"
+    description: "Flowing wave motifs suggesting liquid or natural movement"
+    micrographics: Wave Patterns
+    intensity: standard
+    best_with_styles: [modern-minimalist, nautical-maritime, tropical-paradise]
+
+  - id: micrographics-none
+    name: "No Micrographics"
+    description: "Clean surface with no decorative micrographics"
+    micrographics: None
+    intensity: none
+    best_with_styles: [modern-minimalist, luxury-premium, clean-medical, high-tech-industrial]

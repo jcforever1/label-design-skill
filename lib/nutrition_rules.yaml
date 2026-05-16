@@ -1,0 +1,148 @@
+# Nutrition Rules — Rounding, Daily Values, Unit Conversions by Region
+# CRITICAL: Never let LLM produce nutrition values directly. Use authoritative sources or mark as estimate.
+
+daily_values:
+  US_FDA:
+    based_on: "2000 calorie diet"
+    nutrients:
+      calories: { dv: 2000, unit: kcal }
+      total_fat: { dv: 78, unit: g }
+      saturated_fat: { dv: 20, unit: g }
+      trans_fat: { dv: 0, unit: g }
+      cholesterol: { dv: 300, unit: mg }
+      sodium: { dv: 2300, unit: mg }
+      total_carbohydrate: { dv: 275, unit: g }
+      dietary_fiber: { dv: 28, unit: g }
+      total_sugars: { dv: null }  # no DV for sugars
+      added_sugars: { dv: 50, unit: g }
+      protein: { dv: 50, unit: g }
+      vitamin_d: { dv: 20, unit: mcg }
+      calcium: { dv: 1300, unit: mg }
+      iron: { dv: 18, unit: mg }
+      potassium: { dv: 4700, unit: mg }
+
+  EU_1169:
+    based_on: "2000 calorie diet (reference intake)"
+    nutrients:
+      energy: { dv: 8400, unit: kJ }
+      calories: { dv: 2000, unit: kcal }
+      fat: { dv: 70, unit: g }
+      saturated_fat: { dv: 20, unit: g }
+      carbohydrate: { dv: 260, unit: g }
+      sugars: { dv: 90, unit: g }
+      fiber: { dv: 24, unit: g }
+      protein: { dv: 50, unit: g }
+      salt: { dv: 6, unit: g }
+      sodium: { dv: 2400, unit: mg }
+
+  CA_CFIA:
+    based_on: "2000 calorie diet"
+    nutrients:
+      fat: { dv: 75, unit: g }
+      saturated_fat: { dv: 20, unit: g }
+      trans_fat: { dv: 0, unit: g }
+      cholesterol: { dv: 300, unit: mg }
+      sodium: { dv: 2300, unit: mg }
+      carbohydrate: { dv: 300, unit: g }
+      fiber: { dv: 25, unit: g }
+      sugars: { dv: 100, unit: g }
+      protein: { dv: 50, unit: g }
+      vitamin_a: { dv: 1000, unit: IU }
+      vitamin_c: { dv: 60, unit: mg }
+      calcium: { dv: 1100, unit: mg }
+      iron: { dv: 14, unit: mg }
+
+  AU_FSANZ:
+    based_on: "8700 kJ diet"
+    nutrients:
+      energy: { dv: 8700, unit: kJ }
+      protein: { dv: 50, unit: g }
+      fat_total: { dv: 70, unit: g }
+      saturated_fat: { dv: 24, unit: g }
+      carbohydrate: { dv: 310, unit: g }
+      sugars: { dv: 200, unit: g }
+      sodium: { dv: 2300, unit: mg }
+
+rounding_rules:
+  US_FDA:
+    calories:
+      - rule: "If < 5, round to 0"
+      - rule: "If 5 to 50, round to nearest 5"
+      - rule: "If > 50, round to nearest 10"
+    fat:
+      - rule: "If < 0.5g, round to 0"
+      - rule: "If 0.5g to 5g, round to nearest 0.5g"
+      - rule: "If > 5g, round to nearest 1g"
+    sodium:
+      - rule: "If < 5mg, round to 0"
+      - rule: "If 5mg to 140mg, round to nearest 5mg"
+      - rule: "If > 140mg, round to nearest 10mg"
+    carbohydrate:
+      - rule: "If < 0.5g, round to 0"
+      - rule: "If 0.5g to 1g, round to 1g"
+      - rule: "If > 1g, round to nearest 1g"
+    protein:
+      - rule: "If < 0.5g, round to 0"
+      - rule: "If 0.5g to 4.9g, round to nearest 1g"
+      - rule: "If > 5g, round to nearest 5g"
+
+  EU_1169:
+    energy:
+      - rule: "Round to nearest 1 kJ or 1 kcal"
+    fat:
+      - rule: "Round to nearest 0.1g"
+    saturates:
+      - rule: "Round to nearest 0.1g"
+    carbohydrate:
+      - rule: "Round to nearest 0.1g"
+    sugars:
+      - rule: "Round to nearest 0.1g"
+    protein:
+      - rule: "Round to nearest 0.1g"
+    salt:
+      - rule: "Round to nearest 0.1g"
+
+serving_size_rules:
+  US_FDA:
+    # Must be realistic household measure + metric
+    format: "{household_measure} (X g)"
+    examples:
+      - "2 tbsp (30g)"
+      - "1 cup (240ml)"
+      - "1/2 cup (120g)"
+    requirements:
+      - RACC must be on front label
+      - servings per container required
+      - must be realistic (not "1/3 package")
+
+  EU_1169:
+    # Per 100g/100ml + optional per serving
+    format: "Per 100g / Per portion"
+    requirements:
+      - per 100g is mandatory
+      - per serving is optional
+
+permitted_claims:
+  US_FDA:
+    free_claims:
+      - sugar_free: "< 0.5g per serving"
+      - fat_free: "< 0.5g per serving"
+      - sodium_free: "< 5mg per serving"
+      - calorie_free: "< 5 cal per serving"
+      - gluten_free: "no gluten ingredients"
+    nutrient_claims:
+      - high_fiber: "6g or more per serving"
+      - low_sodium: "140mg or less per serving"
+      - high_protein: "20g or more per serving"
+
+nutrition_estimate_flags:
+  # When user doesn't provide authoritative data, mark as estimate
+  estimate_threshold:
+    accuracy_note: "Nutrient values are estimates based on {source}. Verify with authoritative database before print production."
+    sources_accepted:
+      - USDA FoodData Central
+      - manufacturer provided
+      - recipe calculator (specify tool)
+    sources_prohibited:
+      - direct LLM generation (strictly forbidden)
+      - unverified online calculators

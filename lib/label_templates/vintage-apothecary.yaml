@@ -1,0 +1,85 @@
+# Label Template: Vintage Apothecary
+# For artisanal goods, specialty foods, heritage products
+# Style: Classic typography, nostalgic warmth, handcrafted feel
+
+name: vintage-apothecary
+description: Vintage apothecary label for heritage products, artisanal goods, and specialty foods. Classic, nostalgic, handcrafted.
+industry: artisan_crafts
+recommended_regions: [US_FDA, EU_1169]
+
+design_tokens:
+  color_palette:
+    primary: "#4A3728"        # Dark brown
+    secondary: "#F5E6D3"       # Parchment
+    accent: "#8B4513"        # Saddle brown
+    text_dark: "#2C1810"
+    text_light: "#6B5B4F"
+    background: "#FBF7F0"
+
+  typography:
+    brand_name:
+      font_family: "Playfair Display"
+      weight: 700
+      size: 18
+      tracking: 0.02em
+      style: "uppercase"
+    product_name:
+      font_family: "Playfair Display"
+      weight: 400
+      size: 15
+      style: "italic"
+    tagline:
+      font_family: "IM Fell English"
+      weight: 400
+      size: 9
+      tracking: 0.02em
+      style: "regular"
+    body:
+      font_family: "IM Fell English"
+      weight: 400
+      size: 7.5
+      line_height: 1.5
+
+  spacing:
+    base_unit: 4
+    section_gap: 14
+    inner_padding: 12
+    safe_zone: 8
+
+  border:
+    style: "double-rule"
+    accent_line: true
+    accent_position: all-edges
+
+micrographics:
+  level: standard
+  permitted: decorative borders, ornamental flourishes, aged texture
+  prohibited_zones: [nutrition-facts, ingredient-list]
+  recommended_types: [border-ornaments, fine-lines, grain]
+
+layout:
+  structure:
+    - zone: brand-zone
+      position: top-center
+      width: 100%
+    - zone: ornamental-divider
+      position: below-brand
+      height: auto
+    - zone: product-name
+      position: mid-center
+      height: auto
+    - zone: hero-visual
+      position: mid-right
+      width: 40%
+    - zone: ingredient-list
+      position: bottom-left
+      height: auto
+    - zone: regulatory-text
+      position: bottom
+      height: auto
+
+compliance:
+  allergen_highlight: underline
+  allergen_format: allergens_emphasized_within_ingredients_list
+  nutrition_declaration: required_if_health_claim
+  heritage_styling: true

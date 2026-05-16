@@ -1,0 +1,79 @@
+# Label Template: Organic Artisan
+# For organic foods, craft beverages, natural products
+# Style: Handcrafted warmth, earthy tones, natural textures
+
+name: organic-artisan
+description: Organic artisan label for farm-to-table food, craft beverages, and natural products. Earthy, warm, handcrafted feel.
+industry: food_beverage
+recommended_regions: [US_FDA, EU_1169, CA_CFIA]
+
+design_tokens:
+  color_palette:
+    primary: "#3D4A3A"        # Deep olive green
+    secondary: "#F4EFE6"       # Cream
+    accent: "#B87333"         # Copper/terracotta
+    text_dark: "#2C2C2C"
+    text_light: "#5A5A5A"
+    background: "#F9F6F0"
+
+  typography:
+    brand_name:
+      font_family: "Playfair Display"
+      weight: 700
+      size: 20
+      tracking: 0.02em
+      style: "titlecase"
+    product_name:
+      font_family: "Playfair Display"
+      weight: 400
+      size: 15
+      style: "titlecase"
+    tagline:
+      font_family: "Lato"
+      weight: 400
+      size: 9
+      tracking: 0.05em
+      style: "italic"
+    body:
+      font_family: "Lato"
+      weight: 400
+      size: 7.5
+      line_height: 1.5
+
+  spacing:
+    base_unit: 4
+    section_gap: 14
+    inner_padding: 10
+    safe_zone: 8
+
+  border:
+    style: "thin-rule"
+    accent_line: true
+    accent_position: top
+
+micrographics:
+  level: standard
+  permitted: botanical motifs, fine-line borders, subtle grain
+  prohibited_zones: [nutrition-facts, allergen-statement]
+  recommended_types: [botanical, fine-lines, border-ornaments]
+
+layout:
+  structure:
+    - zone: brand-zone
+      position: top-left
+      width: 60%
+    - zone: hero-visual
+      position: top-right
+      width: 38%
+    - zone: product-name
+      position: mid-left
+      width: 55%
+    - zone: regulatory-text
+      position: bottom
+      height: auto
+
+compliance:
+  allergen_highlight: bold
+  allergen_format: "Contains: {list}"
+  nutrition_declaration: required_if_health_claim
+  organic_certification_box: true

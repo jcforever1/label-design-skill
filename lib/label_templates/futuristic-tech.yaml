@@ -1,0 +1,82 @@
+# Label Template: Futuristic Tech
+# For electronics, tech accessories, and modern consumer goods
+# Style: High-tech, sleek, geometric precision
+
+name: futuristic-tech
+description: Futuristic tech label for electronics, tech accessories, and modern consumer goods. High-tech, sleek, geometric.
+industry: electronics
+recommended_regions: []
+
+design_tokens:
+  color_palette:
+    primary: "#00F5FF"        # Electric cyan
+    secondary: "#0A0A0F"       # Near-black
+    accent: "#7B2FFF"        # Electric purple
+    text_dark: "#FFFFFF"
+    text_light: "#A0A0B0"
+    background: "#0D0D14"
+
+  typography:
+    brand_name:
+      font_family: "Orbitron"
+      weight: 700
+      size: 20
+      tracking: 0.15em
+      style: "uppercase"
+    product_name:
+      font_family: "Rajdhani"
+      weight: 600
+      size: 16
+      style: "uppercase"
+    tagline:
+      font_family: "Rajdhani"
+      weight: 300
+      size: 9
+      tracking: 0.2em
+      style: "uppercase"
+    body:
+      font_family: "Share Tech Mono"
+      weight: 400
+      size: 7.5
+      line_height: 1.4
+
+  spacing:
+    base_unit: 4
+    section_gap: 12
+    inner_padding: 10
+    safe_zone: 8
+
+  border:
+    style: "angular-cut"
+    accent_line: true
+    accent_color: "#00F5FF"
+
+micrographics:
+  level: premium
+  permitted: geometric patterns, circuit traces, glowing accents
+  prohibited_zones: []
+  recommended_types: [geometric, fine-lines]
+
+layout:
+  structure:
+    - zone: brand-zone
+      position: top-left
+      width: 55%
+    - zone: product-name
+      position: bottom-left
+      width: 55%
+    - zone: hero-visual
+      position: top-right
+      width: 42%
+    - zone: barcode-zone
+      position: bottom-right
+      width: 42%
+    - zone: regulatory-text
+      position: bottom-center
+      height: auto
+
+compliance:
+  allergen_highlight: bold
+  allergen_format: "Contains: {list}"
+  nutrition_declaration: not_required
+  technical_specs_display: required

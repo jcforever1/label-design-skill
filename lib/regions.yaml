@@ -1,0 +1,171 @@
+# Region-Specific Labeling Rules
+# Mandatory fields, allergen lists, units, date formats per regulatory region
+
+regions:
+  US_FDA:
+    name: "United States FDA"
+    code: US_FDA
+    mandatory_fields:
+      - product_name
+      - net_weight_or_volume
+      - ingredients
+      - manufacturer_name
+      - country_of_origin
+      - allergen_statement
+    allergen_list:
+      - milk
+      - eggs
+      - fish
+      - crustacean_shellfish
+      - tree_nuts
+      - peanuts
+      - wheat
+      - soybeans
+      - sesame
+    units:
+      weight: [oz, lb, g, kg]
+      volume: [fl_oz, gal, ml, l]
+      mixed: true  # can use both imperial and metric
+    date_format: "MM/DD/YYYY"
+    language: en
+    nutrition_declaration: required_if_health_claim
+    formatted_name: "U.S. FDA"
+
+  EU_1169:
+    name: "European Union 1169/2011"
+    code: EU_1169
+    mandatory_fields:
+      - product_name
+      - net_quantity
+      - ingredients_list
+      - allergens_emphasized (highlighted in ingredients)
+      - durability_date (use-by or best-before)
+      - storage_conditions
+      - business_name_and_address
+      - country_of_origin
+      - nutrition_declaration
+    allergen_list:
+      - cereals_with_gluten
+      - crustaceans
+      - eggs
+      - fish
+      - peanuts
+      - soybeans
+      - milk
+      - nuts
+      - celery
+      - mustard
+      - sesame
+      - sulphites
+      - lupin
+      - molluscs
+    units:
+      weight: [g, kg]
+      volume: [ml, l, cl]
+      mixed: false
+    date_format: "DD/MM/YYYY"  # or YYYY-MM-DD for multilingual
+    language: per_member_state  # must match sale country
+    nutrition_declaration: required
+    formatted_name: "EU Food Information"
+
+  CA_CFIA:
+    name: "Canadian Food Inspection Agency"
+    code: CA_CFIA
+    mandatory_fields:
+      - product_name
+      - net_quantity
+      - ingredients
+      - allergen_statement
+      - country_of_origin
+      - manufacturer_name_and_address
+      - nutrition_facts
+    allergen_list:
+      - milk
+      - eggs
+      - fish
+      - crustacean_shellfish
+      - tree_nuts
+      - peanuts
+      - wheat
+      - soybeans
+      - sesame
+      - sulphites
+    units:
+      weight: [g, kg]
+      volume: [ml, l]
+      mixed: false
+    date_format: "YYYY-MM-DD"
+    language: [en, fr]
+    nutrition_declaration: required
+    formatted_name: "Canadian Food Inspection Agency"
+
+  AU_FSANZ:
+    name: "Australia New Zealand Food Standards"
+    code: AU_FSANZ
+    mandatory_fields:
+      - product_name
+      - net_quantity
+      - ingredients
+      - allergen_statement
+      - country_of_origin
+      - manufacturer_details
+      - nutrition_information
+      - serving_size
+      - energy_per_serving
+    allergen_list:
+      - milk
+      - eggs
+      - fish
+      - crustacean_shellfish
+      - tree_nuts
+      - peanuts
+      - wheat
+      - soybeans
+      - sesame
+      - lupin
+      - oats
+    units:
+      weight: [g, kg]
+      volume: [ml, l]
+      mixed: false
+    date_format: "DD/MM/YYYY"
+    language: en
+    nutrition_declaration: required
+    formatted_name: "FSANZ Food Standards"
+
+allergen_formatting:
+  # How allergens should be visually highlighted on label
+  US_FDA:
+    highlight_style: bold
+    format: "Contains: {allergen_list}"
+    location: below_ingredients
+
+  EU_1169:
+    highlight_style: underlined_or_bold_in_ingredients
+    format: allergens_emphasized_within_ingredients_list
+    location: within_ingredients_list
+
+  CA_CFIA:
+    highlight_style: bold
+    format: "Contains: {allergen_list}"
+    location: below_ingredients
+
+  AU_FSANZ:
+    highlight_style: bold
+    format: "Contains: {allergen_list}"
+    location: below_ingredients
+
+unit_conversions:
+  # For display when switching between systems
+  weight_imperial_to_metric:
+    oz_to_g: 28.3495
+    lb_to_g: 453.592
+    lb_to_kg: 0.453592
+
+  volume_imperial_to_metric:
+    fl_oz_to_ml: 29.5735
+    gal_to_l: 3.78541
+
+  volume_metric_to_imperial:
+    ml_to_fl_oz: 0.033814
+    l_to_gal: 0.264172

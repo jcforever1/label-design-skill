@@ -1,0 +1,76 @@
+# Label Template: Luxury Minimalist
+# For premium cosmetics, skincare, and high-end food products
+# Style: Refined elegance, restrained palette, premium typography
+
+name: luxury-minimalist
+description: Premium minimalist label for luxury cosmetics and high-end food. Clean lines, muted palette, refined typography.
+industry: cosmetics
+recommended_regions: [US_FDA, EU_1169]
+
+design_tokens:
+  color_palette:
+    primary: "#1A1A1A"        # Near-black for authority
+    secondary: "#F5F0EB"       # Warm off-white
+    accent: "#C4A882"         # Muted gold
+    text_dark: "#1A1A1A"
+    text_light: "#6B6B6B"
+    background: "#FDFBF9"
+
+  typography:
+    brand_name:
+      font_family: "Cormorant Garamond"
+      weight: 600
+      size: 22
+      tracking: 0.08em
+      style: "uppercase"
+    product_name:
+      font_family: "Cormorant Garamond"
+      weight: 400
+      size: 16
+      style: "titlecase"
+    tagline:
+      font_family: "Montserrat"
+      weight: 300
+      size: 9
+      tracking: 0.15em
+      style: "uppercase"
+    body:
+      font_family: "Montserrat"
+      weight: 400
+      size: 8
+      line_height: 1.4
+
+  spacing:
+    base_unit: 4
+    section_gap: 16
+    inner_padding: 12
+    safe_zone: 8
+
+  border:
+    style: "none"  # No borders — let whitespace create definition
+    accent_line: false
+
+micrographics:
+  level: minimal
+  permitted: subtle watermark in brand zone only
+  prohibited_zones: [nutrition-facts, ingredients, allergen-statement]
+
+layout:
+  structure:
+    - zone: brand-zone
+      position: top-center
+      height: 20%
+    - zone: hero-visual
+      position: center
+      height: 40%
+    - zone: product-name
+      position: below-hero
+      height: auto
+    - zone: regulatory-text
+      position: bottom
+      height: auto
+
+compliance:
+  allergen_highlight: bold
+  allergen_format: "Contains: {list}"
+  nutrition_declaration: required_if_health_claim

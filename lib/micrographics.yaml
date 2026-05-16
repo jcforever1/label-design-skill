@@ -1,0 +1,94 @@
+# Micrographics Intensity Levels and Placement Rules
+
+levels:
+  - id: none
+    name: "None"
+    description: "Clean label with no decorative micrographics"
+    placement_rules: []
+
+  - id: minimal
+    name: "Minimal"
+    description: "Subtle watermark or fine texture only"
+    placement_rules:
+      - "Use as background watermark at < 5% opacity"
+      - "Single motif only, no repeating pattern"
+      - "Keep away from text zones and critical information"
+      - "Suitable for: modern-minimalist, clean-medical, high-tech-industrial"
+
+  - id: standard
+    name: "Standard"
+    description: "Moderate decorative elements that enhance but don't distract"
+    placement_rules:
+      - "May use repeating patterns or scattered motifs"
+      - "Keep primary information zones clear"
+      - "Micrographics should cover < 30% of label surface"
+      - "Suitable for: eco-friendly-natural, vintage-artisan, mediterranean, scandinavian"
+
+  - id: premium
+    name: "Premium"
+    description: "Rich decorative treatment with full micrographic palette"
+    placement_rules:
+      - "Full botanical, geometric, or wave pattern suites"
+      - "Border treatments, corner ornaments, and background fills"
+      - "May extend into safe zone margins if bleed-approved"
+      - "Suitable for: luxury-premium, art-deco, boho-handcrafted, tropical-paradise"
+
+placement_zones:
+  # These map to SVG layer groups where micrographics are permitted
+  permitted_zones:
+    - background
+    - brand-zone (subtle only)
+    - hero-visual
+    - trim-border
+
+  restricted_zones:
+    - product-name
+    - nutrition-facts-panel
+    - ingredients-panel
+    - allergen-statement
+    - legal-copy
+    - barcode-zone
+    - safe-zone (inner 0.125")
+
+  # Special case: micrographics may appear in the trim zone (bleed area) only for premium level
+  trim_zone:
+    minimal: prohibited
+    standard: prohibited
+    premium: permitted_with_bleed_extension
+
+micrographics_types:
+  - id: grain
+    name: "Subtle Grain"
+    description: "Fine noise texture for tactile quality"
+    file_extension: svg
+    opacity_range: [0.02, 0.08]
+
+  - id: fine-lines
+    name: "Fine Lines"
+    description: "Delicate line patterns for elegant framing"
+    file_extension: svg
+    weight: thin
+
+  - id: geometric
+    name: "Geometric Patterns"
+    description: "Repeating shapes for modern structured aesthetic"
+    file_extension: svg
+    complexity: low
+
+  - id: botanical
+    name: "Botanical Illustrations"
+    description: "Natural plant motifs for organic warmth"
+    file_extension: svg
+    complexity: medium
+
+  - id: wave-patterns
+    name: "Wave Patterns"
+    description: "Flowing wave motifs for fluid or marine themes"
+    file_extension: svg
+    complexity: medium
+
+  - id: border-ornaments
+    name: "Border Ornaments"
+    description: "Decorative edge treatments"
+    file_extension: svg
+    complexity: medium

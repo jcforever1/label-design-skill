@@ -1,0 +1,136 @@
+# Industry to Style Routing
+# Maps product categories to recommended styles for faster wizard defaults
+
+industry_routing:
+  food_beverage:
+    name: "Food & Beverage"
+    recommended_styles:
+      - modern-minimalist
+      - eco-friendly-natural
+      - bold-commercial
+      - mediterranean
+      - scandinavian
+    common_sizes:
+      - "4x3"
+      - "3x2"
+      - "2.5x2.5"
+    nutrition_required: true
+    typical_regions: [US_FDA, EU_1169]
+
+  cosmetics:
+    name: "Cosmetics"
+    recommended_styles:
+      - luxury-premium
+      - japanese-minimalism
+      - boutique-elegance
+      - modern-minimalist
+    common_sizes:
+      - "3x2"
+      - "2x1.5"
+      - "1.5x1"
+    nutrition_required: false
+    typical_regions: [US_FDA, EU_1169]
+
+  health_supplements:
+    name: "Health & Supplements"
+    recommended_styles:
+      - clean-medical
+      - modern-minimalist
+      - tech-futuristic
+      - bold-commercial
+    common_sizes:
+      - "4x3"
+      - "3x2"
+      - "2.5x2"
+    nutrition_required: true
+    typical_regions: [US_FDA, EU_1169, CA_CFIA]
+
+  household:
+    name: "Household"
+    recommended_styles:
+      - modern-minimalist
+      - scandinavian
+      - bold-commercial
+      - clean-medical
+    common_sizes:
+      - "4x3"
+      - "3x2"
+    nutrition_required: false
+    typical_regions: [US_FDA, EU_1169]
+
+  electronics:
+    name: "Electronics"
+    recommended_styles:
+      - tech-futuristic
+      - high-tech-industrial
+      - chic-urban
+      - modern-minimalist
+    common_sizes:
+      - "4x3"
+      - "3x2"
+      - "2x1.5"
+    nutrition_required: false
+    typical_regions: []
+
+  artisan_crafts:
+    name: "Artisan & Crafts"
+    recommended_styles:
+      - vintage-artisan
+      - boho-handcrafted
+      - rustic-farmhouse
+      - farm-to-table
+    common_sizes:
+      - "4x3"
+      - "3x2"
+      - "2.5x2.5"
+    nutrition_required: false
+    typical_regions: []
+
+  general:
+    name: "General"
+    recommended_styles:
+      - modern-minimalist
+      - bold-commercial
+      - clean-medical
+    common_sizes:
+      - "4x3"
+      - "3x2"
+    nutrition_required: false
+    typical_regions: []
+
+style_defaults:
+  # Based on industry, pre-select these defaults in wizard
+  food_beverage:
+    primary_style: modern-minimalist
+    secondary_style: eco-friendly-natural
+    aesthetic_priority: [clean-sans, neutral-one-pop, analogous-warm]
+
+  cosmetics:
+    primary_style: luxury-premium
+    secondary_style: japanese-minimalism
+    aesthetic_priority: [refined-serif, neutral-one-pop, monochromatic-blue]
+
+  health_supplements:
+    primary_style: clean-medical
+    secondary_style: modern-minimalist
+    aesthetic_priority: [clean-sans, monospace-technical, neutral-one-pop]
+
+  household:
+    primary_style: modern-minimalist
+    secondary_style: scandinavian
+    aesthetic_priority: [clean-sans, neutral-one-pop]
+
+  electronics:
+    primary_style: tech-futuristic
+    secondary_style: high-tech-industrial
+    aesthetic_priority: [monospace-technical, bold-display, monochromatic-blue]
+
+  artisan_crafts:
+    primary_style: vintage-artisan
+    secondary_style: boho-handcrafted
+    aesthetic_priority: [hand-lettered, analogous-warm, subtle-grain]
+
+  general:
+    primary_style: modern-minimalist
+    secondary_style: bold-commercial
+    aesthetic_priority: [clean-sans, bold-display]

@@ -1,0 +1,599 @@
+# Label Design Style Library — 25 Styles
+# Each style: id, name, visual_character, best_for, color_palette, typography, ai_prompt_block, negative_prompt_block
+
+styles:
+  - id: modern-minimalist
+    name: "Modern Minimalist"
+    visual_character: "Clean white space, strong typographic hierarchy, deliberate asymmetry. No decorative clutter — every element earns its place. High contrast with precise alignment."
+    best_for: ["premium products", "organic foods", "clean beauty", "tech accessories"]
+    color_palette:
+      - white
+      - charcoal
+      - soft_gray
+      - single_accent_color
+    typography:
+      primary: "Helvetica Neue / Inter / SF Pro — Light to Bold weight variation"
+      secondary: "Akzidenz Grotesk / Univers"
+    ai_prompt_block: |
+      Clean minimalist product label design, white background, subtle typographic hierarchy,
+      asymmetric layout with generous white space, precise alignment, monochromatic palette
+      with single accent, geometric sans-serif typography, no decorative elements,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Cluttered, ornate, vintage, skeuomorphic, busy patterns, multiple colors,
+      decorative borders, drop shadows, gradients, busy background
+
+  - id: luxury-premium
+    name: "Luxury Premium"
+    visual_character: "Gold or silver foil accents, embossed text, deep rich colors (navy, burgundy, black). Editorial photography. Serif typography with tracked spacing. Feels expensive and exclusive."
+    best_for: ["high-end spirits", "luxury cosmetics", "premium chocolate", "fine jewelry packaging"]
+    color_palette:
+      - deep_navy
+      - gold_foil
+      - cream
+      - burgundy
+    typography:
+      primary: "Didot / Bodoni / Times New Roman — Thin to Light weights"
+      secondary: "Futura / Avant Garde"
+    ai_prompt_block: |
+      Luxury premium product label, gold foil stamping, embossed text effect,
+      deep navy background, serif typography with generous letter-spacing,
+      elegant and opulent, minimal layout with maximum impact,
+      foil stamping, debossing, rich color palette, editorial photography style,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Cheap, discount, bright colors, playful, cartoonish, busy, cluttered,
+      pastel colors, rounded fonts, comic style
+
+  - id: eco-friendly-natural
+    name: "Eco-Friendly Natural"
+    visual_character: "Earth tones, kraft paper texture, natural photography. Hand-drawn illustrations. Organic shapes. Feels authentic, sustainable, connected to nature."
+    best_for: ["organic foods", "natural supplements", "eco-cleaning products", "farmers market"]
+    color_palette:
+      - kraft_brown
+      - sage_green
+      - terracotta
+      - cream
+      - moss_green
+    typography:
+      primary: "Freight Sans / Georgia — warm serif for authenticity"
+      secondary: "Century Gothic / Archer"
+    ai_prompt_block: |
+      Eco-friendly natural product label, kraft paper texture background,
+      earth tone color palette, organic shapes, hand-drawn botanical illustration,
+      natural photography, warm and authentic feel, sustainable packaging aesthetic,
+      serif typography, cream and sage green tones, subtle texture,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Synthetic, plastic feel, neon colors, bright white, corporate, sleek,
+      glossy finish, perfect geometry, modern minimalist
+
+  - id: bold-commercial
+    name: "Bold Commercial"
+    visual_character: "High impact, saturated colors, large typography. Optimized for shelf presence at distance. Strong brand name prominence. Clear hierarchy."
+    best_for: ["snack foods", "energy drinks", "mass-market beverages", "retail products"]
+    color_palette:
+      - bright_red
+      - electric_blue
+      - yellow
+      - black
+      - white
+    typography:
+      primary: "Helvetica Black / Futura Extra Bold"
+      secondary: "Trade Gothic / Franklin Gothic"
+    ai_prompt_block: |
+      Bold commercial product label, high impact saturated colors,
+      large typography for shelf presence, strong brand name prominence,
+      clear visual hierarchy, retail optimized, energetic and dynamic,
+      black and bright accent colors, bold sans-serif typography,
+      clean geometric shapes, professional print quality, 300 DPI
+    negative_prompt_block: |
+      Muted colors, small text, subtle, elegant, refined, pastel palette,
+      minimal design, quiet presence, understated
+
+  - id: vintage-artisan
+    name: "Vintage Artisan"
+    visual_character: "Aged paper textures, letterpress printing look, hand-drawn elements, muted sepia tones, nostalgic typography. Craftsman quality feel."
+    best_for: ["artisan chocolates", "craft beer labels", "heritage products", "farm-to-table"]
+    color_palette:
+      - cream
+      - warm_brown
+      - rust_orange
+      - dusty_blue
+      - charcoal
+    typography:
+      primary: "Caslon / Garamond / Baskerville — classic serif"
+      secondary: "Whitney / Circular"
+    ai_prompt_block: |
+      Vintage artisan product label, aged paper texture background,
+      letterpress printing aesthetic, hand-drawn illustration elements,
+      muted sepia and cream tones, nostalgic classic typography,
+      artisan craftsman quality feel, warm and timeless,
+      serif typography with vintage character, subtle distressing effect,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Modern, sleek, neon colors, glossy, perfect printing, clean lines,
+      contemporary design, minimalist, bright white background
+
+  - id: tech-futuristic
+    name: "Tech Futuristic"
+    visual_character: "Metallic finishes, dark backgrounds, glowing edges, circuit board patterns, monospace typography. Feels cutting-edge and high-tech."
+    best_for: ["tech accessories", "energy drinks", "futuristic supplements", "gaming products"]
+    color_palette:
+      - carbon_black
+      - electric_cyan
+      - neon_green
+      - chrome_silver
+      - deep_purple
+    typography:
+      primary: "SF Mono / Roboto Mono / JetBrains Mono"
+      secondary: "Orbitron / Rajdhani"
+    ai_prompt_block: |
+      Tech futuristic product label, metallic chrome finish aesthetic,
+      dark background with glowing cyan or neon green accents,
+      circuit board geometric patterns, monospace technical typography,
+      cutting-edge high-tech feel, sleek and modern, angular shapes,
+      subtle light effects and gradients, cyberpunk inspired design,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Warm earth tones, vintage, handcrafted, soft colors, organic shapes,
+      pastel palette, rounded corners, friendly typography, rustic
+
+  - id: japanese-minimalism
+    name: "Japanese Minimalism"
+    visual_character: "Extreme restraint, asymmetric balance, subtle texture, precise negative space. One or two colors maximum. Feels contemplative and intentional."
+    best_for: ["premium sake", "japanese cosmetics", "minimalist beauty", "zen products"]
+    color_palette:
+      - rice_paper_white
+      - sumi_black
+      - wasabi_green
+      - cherry_blossom_pink
+    typography:
+      primary: "Hiragino Mincho / Noto Serif JP — elegant Japanese serif"
+      secondary: "Helvetica Neue Japanese"
+    ai_prompt_block: |
+      Japanese minimalist product label, extreme restraint and asymmetric balance,
+      rice paper white background with subtle wasabi green accent,
+      precise negative space, elegant Japanese typography influence,
+      contemplative and intentional aesthetic, one or two colors maximum,
+      subtle paper texture, clean geometric layout with organic asymmetry,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Cluttered, busy, multiple colors, bright saturated palette,
+      symmetrical layout, decorative, ornate, heavy typography
+
+  - id: scandinavian
+    name: "Scandinavian"
+    visual_character: "Pale wood tones, soft whites, muted pastels, clean geometric forms. Simple but warm. Functional elegance without coldness."
+    best_for: ["outdoor gear", "baby products", "premium dairy", "nordic crafts"]
+    color_palette:
+      - cloud_white
+      - pale_wood
+      - soft_blush
+      - misty_blue
+      - charcoal
+    typography:
+      primary: "Montserrat / Proxima Nova — geometric clean sans"
+      secondary: "Futura Light"
+    ai_prompt_block: |
+      Scandinavian minimalist product label, pale wood and cloud white tones,
+      soft pastel accent colors, clean geometric forms, functional elegance,
+      warm and inviting minimalism, simple but not cold, geometric sans-serif typography,
+      subtle natural textures, balanced asymmetric layout,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Dark colors, bold saturated primaries, ornate, decorative patterns,
+      vintage feel, heavy typography, busy layout
+
+  - id: mediterranean
+    name: "Mediterranean"
+    visual_character: "Sun-warmed terracotta, olive green, deep azure blue. Olive branch and citrus motifs. Rich but warm. Feels handcrafted and sun-drenched."
+    best_for: ["olive oil", "mediterranean foods", "heritage wines", "coastal products"]
+    color_palette:
+      - terracotta
+      - olive_green
+      - deep_azure
+      - cream
+      - lemon_yellow
+    typography:
+      primary: "Ziggurat / Canyon Brown — bold rustic serif"
+      secondary: "Gill Sans"
+    ai_prompt_block: |
+      Mediterranean product label, sun-warmed terracotta and olive green palette,
+      azure blue accents, olive branch and citrus botanical motifs,
+      handcrafted sun-drenched aesthetic, rustic elegant typography,
+      warm and rich color palette, Mediterranean coastal influence,
+      vintage map texture, classic European feel,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Cool blues, pastel, minimalist, nordic, dark and moody,
+      tech futuristic, neon colors, modern sleek
+
+  - id: art-deco
+    name: "Art Deco"
+    visual_character: "Gatsby-era geometry, gold and black, fan patterns and sunbursts. Bold geometric shapes. Luxurious and theatrical."
+    best_for: ["champagne", "luxury spirits", "art deco cosmetics", "theatrical products"]
+    color_palette:
+      - gold_foil
+      - carbon_black
+      - cream
+      - emerald_green
+      - rich burgundy
+    typography:
+      primary: "Peignot / Broadway / Castellar — art deco display"
+      secondary: "Futura"
+    ai_prompt_block: |
+      Art Deco product label, Gatsby-era geometric patterns, fan shapes and sunbursts,
+      gold foil on carbon black background, luxurious theatrical aesthetic,
+      bold geometric shapes, art deco display typography,
+      emerald green or rich burgundy accents, vintage luxury feel,
+      symmetrical balanced layout, decorative geometric borders,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Plain, simple, minimal, organic shapes, muted pastel colors,
+      modern minimalist, tech futuristic, understated
+
+  - id: retro-diner
+    name: "Retro Diner"
+    visual_character: "1950s Americana, cherry red and mint green, chrome accents, starbursts, classic diner typography. Nostalgic and fun."
+    best_for: ["candy", "soda labels", "classic burgers", "nostalgic snacks"]
+    color_palette:
+      - cherry_red
+      - mint_white
+      - chrome_silver
+      - mustard_yellow
+      - teal
+    typography:
+      primary: "Arnold Griller / Mustang / Chrome Boy — retro display"
+      secondary: "Futura"
+    ai_prompt_block: |
+      Retro 1950s diner style product label, cherry red and mint green color scheme,
+      chrome silver accents, starburst decorative elements, classic diner typography,
+      nostalgic and fun American aesthetic, atomic age geometric shapes,
+      bold retro display lettering, playful layout with starburst graphics,
+      chrome finish effects, vintage Americana feel,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Muted earth tones, modern minimalist, sleek, sophisticated,
+      japanese minimal, luxury premium, dark moody
+
+  - id: boho-handcrafted
+    name: "Boho Handcrafted"
+    visual_character: "Artistic imperfection, macramé textures, warm earth palette, hand-drawn illustrations. Free-spirited and artisanal."
+    best_for: ["artisan goods", "handmade candles", "bohemian accessories", "ethnic food products"]
+    color_palette:
+      - terracotta
+      - mustard
+      - sage
+      - cream
+      - dusty_rose
+    typography:
+      primary: "Omnia / Grafolita Script — boho script"
+      secondary: "Proxima Nova Soft"
+    ai_prompt_block: |
+      Bohemian handcrafted product label, artistic imperfection aesthetic,
+      macramé and woven textures, warm terracotta and mustard earth palette,
+      hand-drawn botanical and illustration elements, free-spirited artisanal feel,
+      soft sage green and dusty rose accents, organic imperfect shapes,
+      boho script and soft typography, layered textured backgrounds,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Perfect geometry, crisp lines, corporate, sleek, modern minimalist,
+      dark colors, tech futuristic, glossy plastic
+
+  - id: high-tech-industrial
+    name: "High-Tech Industrial"
+    visual_character: "Machine aesthetic, metal textures, stenciled typography, high contrast. Utilitarian but impressive."
+    best_for: ["machine parts", "industrial tools", "tech hardware", "safety equipment"]
+    color_palette:
+      - gunmetal
+      - safety_yellow
+      - carbon
+      - chrome
+      - rust
+    typography:
+      primary: "Stencil Std / Arial Black — industrial stencil"
+      secondary: "Roboto Condensed"
+    ai_prompt_block: |
+      High-tech industrial product label, machine aesthetic and metal textures,
+      gunmetal and carbon black palette, stenciled industrial typography,
+      utilitarian impressive design, high contrast safety yellow accents,
+      utilitarian box layout, rivets and metal plate aesthetic,
+      serialized and model number typography, precision engineering feel,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Soft colors, pastel palette, elegant serif typography, organic shapes,
+      friendly rounded, handcrafted, bohemian, nature
+
+  - id: farm-to-table
+    name: "Farm-to-Table"
+    visual_character: "Fresh and wholesome, often illustrated barnyard animals or produce, cream backgrounds, hand-drawn warmth."
+    best_for: ["local produce", "farm eggs", "artisan dairy", "farm fresh products"]
+    color_palette:
+      - cream
+      - barn_red
+      - sky_blue
+      - grass_green
+      - warm_brown
+    typography:
+      primary: "Lobster Two / Pacifico — friendly hand-drawn script"
+      secondary: "Museo Sans / Allerta"
+    ai_prompt_block: |
+      Farm-to-table fresh product label, cream background with warm natural tones,
+      illustrated barnyard animals or fresh produce, farm fresh aesthetic,
+      friendly hand-drawn style, barn red and sky blue accents,
+      grass green and warm brown palette, wholesome and inviting,
+      script and rounded typography, nostalgic farm warmth,
+      rustic wooden crate texture elements,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Dark moody, tech futuristic, sleek modern, neon colors,
+      luxury premium, minimalist, corporate
+
+  - id: boutique-elegance
+    name: "Boutique Elegance"
+    visual_character: "Small batch exclusive feel, custom illustrations, fine paper stocks, muted sophisticated palette. Feels curated and special."
+    best_for: ["boutique cosmetics", "small batch spirits", "artisan perfume", "designer products"]
+    color_palette:
+      - blush
+      - champagne
+      - deep_plum
+      - charcoal
+      - soft_gray
+    typography:
+      primary: "Caslon Elvish / Letter Gothic — refined boutique serif"
+      secondary: "Proxima Nova"
+    ai_prompt_block: |
+      Boutique elegant product label, small batch exclusive aesthetic,
+      custom fine illustration, soft blush and champagne palette,
+      fine paper stock texture, muted sophisticated charcoal and soft gray tones,
+      refined boutique typography, curated and special feel,
+      custom hand-drawn illustration elements, soft elegant layout,
+      subtle debossing and spot UV finishes,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Mass-market, bright primary colors, bold commercial, cluttered,
+      industrial, rough textures, loud typography
+
+  - id: street-urban
+    name: "Street Urban"
+    visual_character: "Grafitti-inspired, bold tags, spray paint textures, neon on dark. Underground, edgy, street culture."
+    best_for: ["streetwear", "skate products", "urban cosmetics", "alternative beverages"]
+    color_palette:
+      - neon_pink
+      - electric_yellow
+      - carbon_black
+      - chrome
+      - electric_blue
+    typography:
+      primary: "Street Brush / Momentum — graff tag style"
+      secondary: "Apex Mk2 Bold"
+    ai_prompt_block: |
+      Street urban graffiti-inspired product label, spray paint texture effects,
+      neon pink and electric yellow on carbon black, graffiti tag typography,
+      underground edgy street culture aesthetic, bold and raw,
+      distressed textures and paint drips, street art influence,
+      dynamic asymmetric layout, chrome and metallic accents,
+      urban hip-hop energy, raw authentic street feel,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Clean and pristine, elegant luxury, pastel colors, refined serif typography,
+      corporate professional, minimalist, farm-to-table, vintage
+
+  - id: nautical-maritime
+    name: "Nautical Maritime"
+    visual_character: "Ocean blues, rope textures, anchor motifs, compass roses. Maritime heritage with classic nautical authority."
+    best_for: ["seafood products", "marine equipment", "nautical gifts", "coastal merchandise"]
+    color_palette:
+      - navy_blue
+      - ocean_spray
+      - rope_brown
+      - brass_gold
+      - white
+    typography:
+      primary: "Aviano Sans / Frigate — nautical bold sans"
+      secondary: "Zurich"
+    ai_prompt_block: |
+      Nautical maritime product label, deep ocean navy blue palette,
+      rope texture and anchor motifs, compass rose decorative elements,
+      maritime heritage aesthetic, classic nautical authority,
+      brass gold and rope brown accents, clean white typography contrast,
+      nautical knot and wave patterns, premium maritime feel,
+      clean bold layout with traditional maritime symbols,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      In landlocked visuals, neon, pastel, playful cartoon style,
+      minimalist modern, tech futuristic, desert tones
+
+  - id: candy-pop
+    name: "Candy Pop"
+    visual_character: "Bright sugar colors, bubble gum pink, kawaii illustrations, playful rounded shapes. Irresistibly fun and sweet."
+    best_for: ["kids candy", "sugar-free sweets", "fun snacks", "gift candies"]
+    color_palette:
+      - bubblegum_pink
+      - sky_blue
+      - sunny_yellow
+      - mint_green
+      - white
+    typography:
+      primary: "Baloon Bd BT / Kiddy Days — playful round display"
+      secondary: "Comic Neue"
+    ai_prompt_block: |
+      Candy pop kawaii product label, bright sugar color palette,
+      bubblegum pink and sky blue, playful kawaii style illustrations,
+      rounded shapes and soft forms, irresistibly fun sweet aesthetic,
+      sunny yellow and mint green accents, cheerful energetic design,
+      rounded playful typography, cute decorative elements,
+      bouncy asymmetric layout, joyful candy shop feel,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Muted earth tones, dark moody, luxury premium, industrial,
+      vintage artisan, minimalist, corporate严肃
+
+  - id: dark-moody
+    name: "Dark Moody"
+    visual_character: "Deep blacks, midnight blues, dramatic shadows. Atmospheric and mysterious. Premium without being bright."
+    best_for: ["dark spirits", "alternative cosmetics", "mood candles", "gothic products"]
+    color_palette:
+      - carbon_black
+      - midnight_blue
+      - deep_wine
+      - silver
+      - charcoal_gray
+    typography:
+      primary: "Cinzel / Trajan — dramatic serif"
+      secondary: "Neue Haas Grotesk"
+    ai_prompt_block: |
+      Dark moody atmospheric product label, deep carbon black background,
+      midnight blue and deep wine accents, dramatic shadows and contrast,
+      mysterious and sophisticated aesthetic, premium without brightness,
+      silver metallic typography, elegant dramatic serif typography,
+      subtle gradient glow effects, moody atmospheric layout,
+      gothic elegance with modern sensibility,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Bright cheerful, pastel colors, sunny yellow, playful typography,
+      warm earth tones, casual friendly, candy pop
+
+  - id: fresh-scandinavian
+    name: "Fresh Scandinavian"
+    visual_character: "Cool whites, birch wood, morning light blues. Airy, clean, Nordic optimism. Functional beauty."
+    best_for: ["skincare", "hair products", "fresh beverages", "nordic home goods"]
+    color_palette:
+      - crisp_white
+      - birch_wood
+      - morning_blue
+      - soft_mint
+      - pale_gray
+    typography:
+      primary: "Garamond / Neutraface — elegant Scandinavian mix"
+      secondary: "Avenir"
+    ai_prompt_block: |
+      Fresh Scandinavian product label, cool crisp whites and birch wood tones,
+      morning light blue accents, airy clean Nordic aesthetic,
+      functional beauty, Nordic optimism, natural daylight palette,
+      soft mint and pale gray subtle accents, elegant typography mix,
+      clean airy layout with natural textures, Scandinavian simplicity,
+      morning light freshness, clean and breathable design,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Dark moody, warm earth tones, saturated colors, ornate,
+      vintage, cluttered, heavy typography, industrial
+
+  - id: rustic-farmhouse
+    name: "Rustic Farmhouse"
+    visual_character: "Weathered wood, chalkboard elements, mason jar aesthetic. Country warmth and honest simplicity."
+    best_for: ["farmhouse goods", "homemade preserves", "rustic decor", "country-style foods"]
+    color_palette:
+      - chalkboard_green
+      - barn_wood_brown
+      - cream
+      - rustic_red
+      - slate_gray
+    typography:
+      primary: "Chalkboard / SF Chalkboard — hand-drawn chalk"
+      secondary: "Nunito"
+    ai_prompt_block: |
+      Rustic farmhouse product label, weathered barn wood texture background,
+      chalkboard green elements, mason jar country aesthetic,
+      honest simplicity and country warmth, rustic red and slate gray accents,
+      chalk-style hand-drawn typography, cream and wood brown palette,
+      farm-fresh authenticity, country charm decorative elements,
+      weathered and distressed texture, farmhouse warmth layout,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Modern sleek, neon colors, tech futuristic, luxury premium,
+      corporate, perfect crisp printing, minimalist
+
+  - id: chic-urban
+    name: "Chic Urban"
+    visual_character: "City sophistication, concrete textures, high-end streetwear vibe. Monochromatic with one sharp accent."
+    best_for: ["urban fashion", "street cosmetics", "city lifestyle products", "contemporary gifts"]
+    color_palette:
+      - concrete_gray
+      - matte_black
+      - sharp_white
+      - neon_orange
+      - steel_blue
+    typography:
+      primary: "Neue Montreal / GT Walsheim — modern geometric sans"
+      secondary: "Aktiv Grotesk"
+    ai_prompt_block: |
+      Chic urban product label, city sophistication and concrete textures,
+      monochromatic palette with sharp neon orange accent,
+      high-end streetwear urban aesthetic, matte black and sharp white,
+      steel blue subtle accents, modern geometric sans typography,
+      urban texture effects, sophisticated city vibe,
+      clean bold layout with urban edge, contemporary streetwear influence,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Pastoral countryside, warm earth tones, vintage, ornate,
+      playful kawaii, rustic, handcrafted
+
+  - id: tropical-paradise
+    name: "Tropical Paradise"
+    visual_character: "Vibrant hibiscus, palm fronds, sunset gradients. Exotic escape in color. Lush and inviting."
+    best_for: ["tropical beverages", "summer products", "exotic sauces", "beach goods"]
+    color_palette:
+      - hibiscus_pink
+      - sunset_orange
+      - palm_green
+      - ocean_cyan
+      - golden_yellow
+    typography:
+      primary: "Chunkfive / Pacifico — bold tropical display"
+      secondary: "Apex"
+    ai_prompt_block: |
+      Tropical paradise product label, vibrant hibiscus pink and sunset orange palette,
+      palm frond botanical illustrations, lush tropical exotic escape,
+      ocean cyan and golden yellow accents, gradient sunset effects,
+      tropical floral elements, bold inviting layout,
+      vibrant warm tropical colors, paradise beach aesthetic,
+      exotic lush design, summer vacation feel,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Muted tones, dark moody, nordic cool, minimalist,
+      industrial, corporate, vintage muted, rustic
+
+  - id: clean-medical
+    name: "Clean Medical"
+    visual_character: "Clinical precision, crisp whites, medical blues, no-nonsense typography. Trust and sterility."
+    best_for: ["medical devices", "pharmaceutical", "clinical supplements", "healthcare products"]
+    color_palette:
+      - clinical_white
+      - medical_blue
+      - safety_green
+      - neutral_gray
+      - crisp_teal
+    typography:
+      primary: "Roboto / Helvetica — clean medical sans"
+      secondary: "Source Sans Pro"
+    ai_prompt_block: |
+      Clean medical product label, clinical precision aesthetic,
+      crisp clinical white background, medical blue and safety green accents,
+      no-nonsense clean typography, trust and sterility,
+      neutral gray and crisp teal palette, medical hierarchy layout,
+      precise information architecture, FDA compliant typography,
+      clean grid structure, professional medical design,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      Decorative flourish, warm earth tones, vintage, playful,
+      ornate borders, soft pastels, artistic imperfection
+
+  - id: custom
+    name: "Custom"
+    visual_character: "Design-free zone — Claude and user collaborate from scratch using all style primitives, aesthetic approaches, micrographics rules, and color psychology from the full skill library. No template constraints."
+    best_for: ["unique brand identity", "innovative packaging", "concept products", "non-standard forms"]
+    color_palette:
+      - "user-defined — any custom palette assembled from color psychology principles"
+    typography:
+      primary: "user-defined from Google Fonts + system font stacks"
+      secondary: "user-defined"
+    ai_prompt_block: |
+      Bespoke custom product label designed from scratch,
+      unique brand identity using all available style primitives,
+      innovative packaging design, non-standard creative form,
+      custom assembled from style library elements, fresh creative direction,
+      professional print quality, 300 DPI
+    negative_prompt_block: |
+      (Negative prompt negotiated between Claude and user based on specific direction)
