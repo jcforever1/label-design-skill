@@ -815,6 +815,10 @@ def main():
     parser.add_argument("--serving-size", default="1 cup (240ml)")
     parser.add_argument("--servings", default="8")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--dpi", type=int, default=300,
+                        help="Output DPI for PNG rasterization (default 300)")
+    parser.add_argument("--cmyk", action="store_true",
+                        help="Tag output for CMYK print mode (cairo/inkscape produce RGB; separate conversion required)")
     args = parser.parse_args()
 
     # Chocolate chip cookie — worked example
@@ -862,6 +866,16 @@ def main():
     )
     if path:
         print(f"Rendered: {path}")
+
+    # Rasterize nutrition SVG → PNG at specified DPI
+    if not args.dry_run:
+        _mod = importlib.import_module("scripts.svg_to_png")
+        png_path = _mod.svg_to_png(args.spec_id, dpi=args.dpi, filename="nutrition.svg")
+        if png_path:
+            print(f"PNG: {png_path}")
+        else:
+            print("PNG rasterization skipped (no renderer available)")
+
     print(f"Calories: {facts.calories:.0f}, Fat: {facts.total_fat_g:.1f}g, "
           f"Carbs: {facts.total_carbohydrate_g:.1f}g, Protein: {facts.protein_g:.1f}g")
     print(f"Sugars: {facts.total_sugars_g:.1f}g, Fiber: {facts.dietary_fiber_g:.1f}g")

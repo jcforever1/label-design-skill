@@ -124,26 +124,27 @@ def svg_to_png_placeholder(png_path: Path, width_in: float = 4, height_in: float
         return False
 
 
-def svg_to_png(spec_id: str, dry_run: bool = False) -> Path | None:
+def svg_to_png(spec_id: str, dry_run: bool = False, dpi: int = DPI,
+               filename: str = "label.svg") -> Path | None:
     """
-    Convert renders/{spec_id}/label.svg to renders/{spec_id}/label.png at 300 DPI.
+    Convert renders/{spec_id}/{filename} to PNG at the specified DPI.
     Returns PNG path or None on failure.
     """
-    svg_path = RENDERS_DIR / spec_id / "label.svg"
-    png_path = RENDERS_DIR / spec_id / "label.png"
+    svg_path = RENDERS_DIR / spec_id / filename
+    png_path = RENDERS_DIR / spec_id / f"{Path(filename).stem}.png"
 
     if not svg_path.exists():
         print(f"SVG not found: {svg_path}", file=sys.stderr)
         return None
 
     if dry_run:
-        print(f"Would convert {svg_path} -> {png_path} at {DPI} DPI")
+        print(f"Would convert {svg_path} -> {png_path} at {dpi} DPI")
         return None
 
     if is_cairosvg_available():
-        ok = svg_to_png_cairo(svg_path, png_path)
+        ok = svg_to_png_cairo(svg_path, png_path, dpi=dpi)
     elif is_inkscape_available():
-        ok = svg_to_png_inkscape(svg_path, png_path)
+        ok = svg_to_png_inkscape(svg_path, png_path, dpi=dpi)
     else:
         ok = svg_to_png_placeholder(png_path)
 
@@ -157,10 +158,11 @@ def main():
 
     parser = argparse.ArgumentParser(description="Rasterize label SVG to 300 DPI PNG")
     parser.add_argument("spec_id", help="Spec ID")
+    parser.add_argument("--dpi", type=int, default=DPI, help=f"Output DPI (default {DPI})")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be done")
     args = parser.parse_args()
 
-    path = svg_to_png(args.spec_id, dry_run=args.dry_run)
+    path = svg_to_png(args.spec_id, dry_run=args.dry_run, dpi=args.dpi)
     if path:
         print(f"PNG: {path}")
 
