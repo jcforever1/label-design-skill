@@ -665,20 +665,39 @@ Output to: `renders/<spec_id>/nutrition-panel-<region>.svg`
 
 **Usage:** `/nutrition-label spec_id=<spec_id> ingredients=<json> region=<US_FDA|EU_1169|CA_CFIA|AU_FSANZ>`
 
-Generates a complete nutrition panel SVG from an ingredient list. The pipeline: (1) accept ingredients with weights, (2) web-search USDA FoodData Central (fdc.nal.usda.gov) for each ingredient, (3) user-confirms top-3 matches, (4) retrieve per-100g nutrient profile, (5) apply cooking method yield factor (USDA Table 4), (6) scale to serving size, (7) apply regulatory rounding rules (21 CFR 101.9(c) / EU Annex XV / CFIA / FSANZ), (8) calculate %DV/%RI/%DI, (9) flag FDA major allergens, (10) render panel SVG.
+Generates a complete nutrition panel SVG from an ingredient list. Executes a deterministic pipeline — **never generates nutrient values from memory**:
+
+1. **Extract** — Parse each ingredient + weight from user input
+2. **USDA lookup** — For each ingredient, search USDA FoodData Central via API
+   - If similarity < `min_confidence_threshold` (default 0.85), surface top-3 matches for user confirmation before proceeding
+   - Retrieve per-100g nutrient profile (lab-analyzed entries preferred)
+3. **Cooking yield** — If `cooking_method` specified, apply USDA Table 4 yield factor
+4. **Scaling** — Aggregate nutrients across all ingredients, scale to `serving_size_grams`
+5. **Rounding** — Apply regulatory rounding rules: 21 CFR 101.9(c) for US_FDA, Annex XV for EU_1169, CFIA/FSANZ equivalents
+6. **%DV** — Calculate using 2016 FDA Daily Values
+7. **Allergen detection** — Bold-format any of the 9 FDA major allergens (milk, egg, fish, shellfish, tree nuts, peanuts, wheat, soybeans, sesame) detected in ingredients
+8. **Render** — Output panel as vector SVG in requested `panel_format`
+9. **Append** — Mandatory disclaimer + data source citations (FDC database IDs per ingredient)
 
 **Arguments:**
 - `spec_id` — label spec to attach panel to
-- `ingredients` — JSON array of `{name, weight_g, cooking_method}` objects
+- `ingredients` — JSON array of `{name, weight_g, cooking_method, fdc_id_hint}` objects
 - `region` — format: `US_FDA`, `EU_1169`, `CA_CFIA`, or `AU_FSANZ`
 - `serving_size` — serving size string (optional, default: "1 cup (240ml)")
 - `servings_per_container` — string (optional, default: "8")
+- `min_confidence_threshold` — float 0.0–1.0 (default: 0.85). When USDA match similarity is below this, top-3 candidates are surfaced for user confirmation before proceeding.
+- `panel_format` — `standard` | `tabular` | `linear` | `dual_column` (default: `standard`)
+- `include_disclaimer` — boolean (default: true)
 
-**Script called:** `python3 ~/.claude/skills/label-design/scripts/nutrition_labelifier.py <spec_id> --region <region> --serving-size <size> --servings <n>`
+**Constraint — Source traceability:**
+> Every numeric value in the rendered panel MUST trace to a source database ID. The panel output includes a `sources` block listing each ingredient's FDC ID and data quality flag. Values with source-confidence below `min_confidence_threshold` are flagged with `?` and excluded from %DV calculations until confirmed by the user.
 
-**Web search step:** For each ingredient, search `fdc.nal.usda.gov` for per-100g nutrient data. Surface top-3 matches for user confirmation before proceeding.
+**Constraint — No hallucination:**
+> Never generate, estimate, or infer nutrient values. If USDA FDC returns no match for an ingredient, flag it explicitly and do not render a value — ask the user to provide the nutrient data or skip that ingredient.
 
-**Allergen detection:** FDA major allergens (milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soybeans, sesame) detected from ingredient names and flagged in the panel.
+**Script called:** `python3 ~/.claude/skills/label-design/scripts/nutrition_labelifier.py <spec_id> --region <region> --serving-size <size> --servings <n> --min-confidence <threshold> --panel-format <format>`
+
+**Allergen detection:** FDA major allergens detected from ingredient names and flagged in the panel with bold formatting.
 
 **Output:** `renders/<spec_id>/nutrition.svg`
 
