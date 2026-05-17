@@ -26,6 +26,10 @@ from typing import Optional
 SKILL_DIR = Path.home() / ".claude" / "skills" / "label-design"
 NUTRITION_RULES_PATH = SKILL_DIR / "lib" / "nutrition_rules.yaml"
 
+# FDC API key — set via environment USDA_FDC_API_KEY if available.
+# When None, the pipeline falls back to web-search or default values.
+_USDA_FDC_API_KEY = None
+
 
 # ─── Daily Values ────────────────────────────────────────────────────────────
 
@@ -418,6 +422,56 @@ def _search_usda_food_web_fallback(food_name: str) -> list[dict]:
     return []
 
 
+def _lookup_fdc_id(fdc_id: str, api_key: str | None = None) -> dict | None:
+    """Direct FDC ID lookup. Returns dict with per_100g nutrients + _weight_g, or None."""
+    key = api_key or _get_api_key()
+    if not key:
+        return None
+
+    import urllib.request, urllib.parse, json
+
+    url = f"{FDC_API_BASE}/food/{fdc_id}"
+    params = urllib.parse.urlencode({"api_key": key})
+    req = urllib.request.Request(f"{url}?{params}")
+    req.add_header("Accept", "application/json")
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            item = json.loads(resp.read())
+    except Exception:
+        return None
+
+    fdc_id_str = str(item.get("fdcId", ""))
+    per_100g = {}
+    for ng in item.get("foodNutrients", []):
+        num = ng.get("nutrientNumber", "")
+        val = ng.get("value")
+        if val is None:
+            continue
+        unit = ng.get("unitName", "")
+        attr = _fdc_nutrient_map().get(num, "")
+        if attr and unit in ("g", "mg", "mcg", "IU"):
+            per_100g[attr] = val
+
+    return {"_weight_g": 100.0, **per_100g}
+
+
+def _fdc_to_nutrition(per_100g: dict) -> NutritionFacts:
+    """Convert FDC per_100g nutrient dict to NutritionFacts."""
+    facts = NutritionFacts()
+    for key, val in per_100g.items():
+        attr = _nutrient_key_map().get(key, key)
+        if hasattr(facts, attr) and isinstance(val, (int, float)):
+            setattr(facts, attr, val)
+    return facts
+
+
+def _default_nutrition(ingredient_name: str) -> NutritionFacts:
+    """Return empty NutritionFacts with estimate note when no FDC data available."""
+    facts = NutritionFacts()
+    facts.estimate_note = f"⚠️ No USDA FDC data for '{ingredient_name}' — nutrient estimate unavailable."
+    return facts
+
+
 # ─── Aggregate nutrients ─────────────────────────────────────────────────────
 
 def confirm_fdc_match(
@@ -487,6 +541,17 @@ def _aggregate_single_ingredient(
     # Search FDC
     matches = search_usda_food(ing.name, api_key)
     if not matches:
+        # FDC lookup failed — try using ing.raw_nutrients directly (pre-computed per-100g data)
+        if ing.raw_nutrients:
+            scale = ing.weight_g / 100.0
+            facts = NutritionFacts()
+            facts.source_db_ids = [nv.source_db_id for k, nv in ing.raw_nutrients.items() if nv.source_db_id] or []
+            for key, nv in ing.raw_nutrients.items():
+                val = float(nv.value) * scale if isinstance(nv.value, (int, float)) else 0.0
+                attr = _nutrient_key_map().get(key, key)
+                if hasattr(facts, attr):
+                    setattr(facts, attr, getattr(facts, attr, 0.0) + val)
+            return facts, ing.weight_g, None
         # Fall back to default nutrition
         return _default_nutrition(ing.name), 100.0, None
 
@@ -539,16 +604,25 @@ def _nutrient_key_map() -> dict[str, str]:
         "fat": "total_fat_g",
         "saturated_fat": "saturated_fat_g",
         "trans_fat": "trans_fat_g",
+        "polyunsaturated_fat": "polyunsaturated_fat_g",
+        "monounsaturated_fat": "monounsaturated_fat_g",
         "cholesterol": "cholesterol_mg",
         "sodium": "sodium_mg",
         "carbohydrate": "total_carbohydrate_g",
         "fiber": "dietary_fiber_g",
         "sugars": "total_sugars_g",
+        "added_sugars": "added_sugars_g",
         "protein": "protein_g",
         "vitamin_d": "vitamin_d_mcg",
+        "vitamin_a": "vitamin_a_iu",
+        "vitamin_b12": "vitamin_b12_mcg",
         "calcium": "calcium_mg",
         "iron": "iron_mg",
         "potassium": "potassium_mg",
+        "phosphorus": "phosphorus_mg",
+        "magnesium": "magnesium_mg",
+        "copper": "copper_mg",
+        "selenium": "selenium_mcg",
     }
 
 
@@ -743,27 +817,47 @@ def main():
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
-    # Demo: apple (web-search USDA for "apple fdc.nal.usda.gov")
-    ing = Ingredient(
-        name="Apple, raw",
-        weight_g=182,
-        raw_nutrients={
-            "calories": NutrientValue(value=95, unit="kcal", source_db_id="171688", source_confidence=0.92),
-            "fat": NutrientValue(value=0.31, unit="g", source_db_id="171688", source_confidence=0.92),
-            "carbohydrate": NutrientValue(value=25, unit="g", source_db_id="171688", source_confidence=0.92),
-            "fiber": NutrientValue(value=4.4, unit="g", source_db_id="171688", source_confidence=0.92),
-            "sugars": NutrientValue(value=19, unit="g", source_db_id="171688", source_confidence=0.92),
-            "protein": NutrientValue(value=0.47, unit="g", source_db_id="171688", source_confidence=0.92),
-            "sodium": NutrientValue(value=2, unit="mg", source_db_id="171688", source_confidence=0.92),
-        },
-        matched_fdc_id="171688",
-        matched_name="Apple, raw",
-    )
+    # Chocolate chip cookie — worked example
+    # Total batch: 800g yield, 24 servings, 33g per cookie
+    cookie_ings = [
+        ("All-purpose flour",       280, "169910", {"calories": 364,  "protein": 10.3,  "total_fat_g": 0.98,   "total_carbohydrate_g": 76.3,  "total_sugars_g": 0.27,  "dietary_fiber_g": 2.7,  "saturated_fat_g": 0.16,  "sodium_mg": 2,    "iron_mg": 4.6,   "calcium_mg": 15,  "potassium_mg": 107, "phosphorus_mg": 108, "magnesium_mg": 22}),
+        ("Granulated sugar",         150, "19368",  {"calories": 387,  "protein": 0.0,   "total_fat_g": 0.0,    "total_carbohydrate_g": 99.98, "total_sugars_g": 99.98,"dietary_fiber_g": 0.0,  "saturated_fat_g": 0.0,   "sodium_mg": 1,    "iron_mg": 0.01,  "calcium_mg": 1,   "potassium_mg": 2,   "phosphorus_mg": 0,   "magnesium_mg": 0}),
+        ("Brown sugar",              150, "19892",  {"calories": 380,  "protein": 0.05,  "total_fat_g": 0.0,    "total_carbohydrate_g": 98.1,  "total_sugars_g": 97.0,  "dietary_fiber_g": 0.0,  "saturated_fat_g": 0.0,   "sodium_mg": 28,   "iron_mg": 0.05,  "calcium_mg": 46,  "potassium_mg": 133, "phosphorus_mg": 0,   "magnesium_mg": 0}),
+        ("Unsalted butter",          200, "173410", {"calories": 717,  "protein": 0.85,  "total_fat_g": 81.1,   "total_carbohydrate_g": 0.12, "total_sugars_g": 0.12,  "dietary_fiber_g": 0.0,  "saturated_fat_g": 51.4,  "polyunsaturated_fat_g": 3.4, "monounsaturated_fat_g": 23.0, "sodium_mg": 11,  "iron_mg": 0.02,  "calcium_mg": 24,  "potassium_mg": 24,  "phosphorus_mg": 0,   "magnesium_mg": 0,  "vitamin_a_iu": 2499, "vitamin_d_iu": 59, "cholesterol_mg": 215}),
+        ("Large egg",                100, "171287", {"calories": 143,  "protein": 12.6,  "total_fat_g": 9.5,    "total_carbohydrate_g": 0.71,  "total_sugars_g": 0.71,  "dietary_fiber_g": 0.0,  "saturated_fat_g": 3.1,   "polyunsaturated_fat_g": 1.9, "monounsaturated_fat_g": 3.7, "sodium_mg": 142, "iron_mg": 1.8,   "calcium_mg": 56,  "potassium_mg": 138, "phosphorus_mg": 198, "magnesium_mg": 12,  "selenium_mcg": 31,  "cholesterol_mg": 373, "vitamin_a_iu": 540, "vitamin_d_iu": 82, "vitamin_b12_mg": 0.89}),
+        ("Semi-sweet choc chips",    200, "19904",  {"calories": 479,  "protein": 4.2,   "total_fat_g": 26.6,   "total_carbohydrate_g": 64.3,  "total_sugars_g": 56.2,  "dietary_fiber_g": 7.0,  "saturated_fat_g": 15.2,  "polyunsaturated_fat_g": 0.6, "monounsaturated_fat_g": 8.8, "sodium_mg": 24,  "iron_mg": 3.1,   "calcium_mg": 43,  "potassium_mg": 418, "phosphorus_mg": 144, "magnesium_mg": 114, "copper_mg": 0.7}),
+        ("Vanilla extract",            5, "2051684", {"calories": 288,  "protein": 0.06,  "total_fat_g": 0.01,   "total_carbohydrate_g": 12.8,  "total_sugars_g": 12.8,  "dietary_fiber_g": 0.0,  "saturated_fat_g": 0.0,   "sodium_mg": 9,    "iron_mg": 0.12,  "calcium_mg": 11,  "potassium_mg": 148, "phosphorus_mg": 0,   "magnesium_mg": 0}),
+        ("Baking soda",               5, "16202",  {"sodium_mg": 27360, "sodium": 27360}),
+        ("Salt",                       3, "18628",  {"sodium_mg": 38758, "sodium": 38758, "iron_mg": 0.03, "calcium_mg": 24, "potassium_mg": 8}),
+    ]
+
+    raw_nutrients_units = {
+        "calories": "kcal", "protein": "g", "total_fat_g": "g", "saturated_fat_g": "g",
+        "polyunsaturated_fat_g": "g", "monounsaturated_fat_g": "g",
+        "total_carbohydrate_g": "g", "total_sugars_g": "g", "dietary_fiber_g": "g",
+        "sodium_mg": "mg", "sodium": "mg", "iron_mg": "mg", "calcium_mg": "mg",
+        "potassium_mg": "mg", "phosphorus_mg": "mg", "magnesium_mg": "mg",
+        "copper_mg": "mg", "selenium_mcg": "mcg", "cholesterol_mg": "mg",
+        "vitamin_a_iu": "IU", "vitamin_d_iu": "IU", "vitamin_b12_mg": "mg",
+    }
+
+    ingredients = []
+    for name, wg, fid, nut_dict in cookie_ings:
+        raw_nutrients = {}
+        for k, v in nut_dict.items():
+            if v is None:
+                continue
+            unit = raw_nutrients_units.get(k, "g")
+            raw_nutrients[k] = NutrientValue(value=v, unit=unit, source_db_id=fid, source_confidence=1.0)
+        # Pass raw per-100g values — _aggregate_single_ingredient handles scaling
+        ingredients.append(Ingredient(name=name, weight_g=wg, raw_nutrients=raw_nutrients, matched_fdc_id=fid, matched_name=name))
+
     path, facts, allergens = render_labelifier_panel(
-        args.spec_id, [ing],
+        args.spec_id, ingredients,
         region=args.region,
         serving_size=args.serving_size,
         servings_per_container=args.servings,
+        cooking_methods=["baked"] * len(ingredients),
         dry_run=args.dry_run,
     )
     if path:
@@ -771,6 +865,7 @@ def main():
     print(f"Calories: {facts.calories:.0f}, Fat: {facts.total_fat_g:.1f}g, "
           f"Carbs: {facts.total_carbohydrate_g:.1f}g, Protein: {facts.protein_g:.1f}g")
     print(f"Sugars: {facts.total_sugars_g:.1f}g, Fiber: {facts.dietary_fiber_g:.1f}g")
+    print(f"Sodium: {facts.sodium_mg:.0f}mg, Iron: {facts.iron_mg:.1f}mg, Calcium: {facts.calcium_mg:.0f}mg")
     print(f"Allergens: {allergens}")
     print(f"Source DB IDs: {facts.source_db_ids}")
 
