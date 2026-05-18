@@ -17,6 +17,7 @@ import yaml
 from pathlib import Path
 
 from render_micrographics import render_micrographics_layer
+from fal_client import generate_label_image, enhance_svg_artwork, is_configured as fal_is_configured
 
 SKILL_DIR = Path.home() / ".claude" / "skills" / "label-design"
 SPECS_DIR = SKILL_DIR / "specs"
@@ -177,7 +178,8 @@ def build_svg(spec: dict, spec_id: str) -> str:
     return svg
 
 
-def render_svg(spec_id: str, dry_run: bool = False) -> Path | None:
+def render_svg(spec_id: str, dry_run: bool = False,
+                ai_backend: bool = False, ai_size: str = "square") -> Path | None:
     """Render spec to SVG file. Returns path or None on failure."""
     path = SPECS_DIR / f"{spec_id}.yaml"
     if not path.exists():
@@ -205,6 +207,15 @@ def render_svg(spec_id: str, dry_run: bool = False) -> Path | None:
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(svg_content)
 
+    if ai_backend:
+        if not fal_is_configured():
+            print("FAL_API_KEY not set — skipping AI enhancement.", file=sys.stderr)
+        else:
+            result = generate_label_image(spec_id, size=ai_size)
+            if result and result["images"]:
+                ok = enhance_svg_artwork(spec_id, out_path, result["images"][0]["url"])
+                print(f"AI artwork injected: {'ok' if ok else 'failed'}")
+
     return out_path
 
 
@@ -213,9 +224,14 @@ def main():
     parser = argparse.ArgumentParser(description="Render label spec to SVG")
     parser.add_argument("spec_id", help="Spec ID")
     parser.add_argument("--dry-run", action="store_true", help="Print SVG to stdout without writing")
+    parser.add_argument("--ai-enhance", action="store_true", help="Generate AI artwork via Fal AI and inject into SVG")
+    parser.add_argument("--ai-size", default="square",
+                        choices=["square", "portrait", "landscape_16_9"],
+                        help="AI image size (default: square)")
     args = parser.parse_args()
 
-    path = render_svg(args.spec_id, dry_run=args.dry_run)
+    path = render_svg(args.spec_id, dry_run=args.dry_run,
+                        ai_backend=args.ai_enhance, ai_size=args.ai_size)
     if path:
         print(f"Rendered: {path}")
 

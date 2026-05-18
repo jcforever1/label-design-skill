@@ -41,6 +41,8 @@ Generates professional, print-ready product label designs across multiple sizes,
 | Command | Description |
 |---|---|
 | `/render-label spec_id=... format=SVG` | Generate SVG (canonical production asset) |
+| `/render-label spec_id=... format=SVG --ai-enhance` | Generate SVG with AI-generated artwork (requires `FAL_API_KEY`) |
+| `/render-label spec_id=... format=SVG --ai-size=portrait` | AI image size: `square`, `portrait`, or `landscape_16_9` (default: square) |
 | `/render-label spec_id=... format=PNG` | Generate PNG preview |
 | `/render-label spec_id=... format=JSON` | Generate layout JSON |
 | `/render-label spec_id=... format=PROMPT` | Generate AI image prompt (mockup only) |
@@ -341,6 +343,50 @@ Supported: `US_FDA`, `EU_1169`, `CA_CFIA`, `AU_FSANZ`
 | PACKAGE | All outputs bundled |
 
 ---
+
+## Fal AI Configuration
+
+Set `FAL_API_KEY` to enable AI-generated artwork injection into SVG renders.
+
+**Setup:**
+```bash
+export FAL_API_KEY=your-key-here
+```
+
+**Model selection** is automatic based on label spec attributes:
+
+| Industry | Style | Model |
+|----------|-------|-------|
+| food_beverage | modern_minimalist, eco_friendly_natural | fal-ai/flux-pro |
+| food_beverage | bold_commercial | fal-ai/flux-ultra |
+| food_beverage | mediterranean, vintage_artisan, rustic_farmhouse | fal-ai/flux-realism |
+| cosmetics | luxury_premium, boutique_elegance | fal-ai/flux-ultra |
+| cosmetics | japanese_minimalism, clean_medical | fal-ai/flux-pro |
+| health_supplements | modern_minimalist, tech_futuristic | fal-ai/flux-pro |
+| health_supplements | bold_commercial | fal-ai/flux-ultra |
+| health_supplements | scientific_botanical | fal-ai/flux-realism |
+| artisan_crafts | vintage_artisan, boho_handcrafted, cottage_core | fal-ai/flux-realism |
+| electronics | tech_futuristic, soft_futurism | fal-ai/flux-pro |
+| electronics | high_tech_industrial | fal-ai/flux-ultra |
+
+Fallback: `fal-ai/flux-pro` for any unmatched combination.
+
+**Verification:**
+```bash
+python3 ~/.claude/skills/label-design/scripts/fal_client.py status
+```
+
+**CLI (standalone:**
+```bash
+# Check status
+python3 ~/.claude/skills/label-design/scripts/fal_client.py status
+
+# Generate artwork for a spec
+python3 ~/.claude/skills/label-design/scripts/fal_client.py generate test-cookie --size square
+
+# Generate and inject into SVG
+python3 ~/.claude/skills/label-design/scripts/fal_client.py generate test-cookie --size square --inject
+```
 
 ---
 
