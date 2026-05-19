@@ -65,6 +65,88 @@ def hex_to_svg_rgb(hex_color: str) -> str:
     return hex_color
 
 
+def hex_to_cmyk(hex_color: str) -> dict:
+    """Convert #RRGGBB to CMYK percentage dict for print production."""
+    hex_color = hex_color.lstrip("#")
+    if len(hex_color) != 6:
+        return {"c": 0, "m": 0, "y": 0, "k": 100}
+    r = int(hex_color[0:2], 16) / 255
+    g = int(hex_color[2:4], 16) / 255
+    b = int(hex_color[4:6], 16) / 255
+    k = 1 - max(r, g, b)
+    if k == 1:
+        return {"c": 0, "m": 0, "y": 0, "k": 100}
+    c = (1 - r - k) / (1 - k)
+    m = (1 - g - k) / (1 - k)
+    y = (1 - b - k) / (1 - k)
+    return {
+        "c": round(c * 100),
+        "m": round(m * 100),
+        "y": round(y * 100),
+        "k": round(k * 100),
+    }
+
+
+def wrap_text(text: str, max_chars_per_line: int = 25) -> list[str]:
+    """Wrap long text into lines at word boundaries."""
+    if not text:
+        return []
+    lines = []
+    words = text.split()
+    current_line = ""
+
+    for word in words:
+        test_line = f"{current_line} {word}".strip()
+        if len(test_line) <= max_chars_per_line or not current_line:
+            current_line = test_line
+        else:
+            if current_line:
+                lines.append(current_line)
+            current_line = word
+    if current_line:
+        lines.append(current_line)
+    return lines
+
+
+def build_tspan_lines(lines: list[str], x: float, y: float,
+                       font_size: int, line_height: float = 1.2) -> str:
+    """Build SVG tspan elements for multi-line text."""
+    if not lines:
+        return ""
+    first_line = lines[0]
+    rest_lines = lines[1:]
+
+    tspan = f'<tspan x="{x:.2f}" dy="0">{first_line}</tspan>'
+    for line in rest_lines:
+        tspan += f'\n    <tspan x="{x:.2f}" dy="{font_size * line_height:.2f}">{line}</tspan>'
+    return tspan
+
+
+def build_google_fonts_style(font_families: list[str]) -> str:
+    """
+    Generate an SVG <style> block that loads Google Fonts via CSS @import.
+
+    Usage: inject the returned string inside the <svg> element, before any <g> layers.
+    Font names with spaces should be quoted in the SVG font-family attribute
+    (e.g., 'Playfair Display').
+    """
+    if not font_families:
+        return ""
+    # Build the family list for the URL (pipe-separated, spaces encoded as +)
+    families_param = "+".join(f.replace(" ", "+") for f in font_families)
+    google_url = (
+        f"https://fonts.googleapis.com/css2?"
+        f"family={families_param}&display=swap"
+    )
+    return (
+        f"  <defs>\n"
+        f"    <style type=\"text/css\">\n"
+        f"      @import url('{google_url}');\n"
+        f"    </style>\n"
+        f"  </defs>\n"
+    )
+
+
 def build_svg(spec: dict, spec_id: str) -> str:
     """Build SVG string from spec."""
     label = spec.get("label", {})
@@ -110,7 +192,7 @@ def build_svg(spec: dict, spec_id: str) -> str:
      viewBox="0 0 {aw:.2f} {ah:.2f}">
   <title>{brand} — {product} Label</title>
   <desc>Generated from spec {spec_id}</desc>
-
+{build_google_fonts_style(spec.get("typography", {}).get("families", []))}
   <!-- LAYER: background -->
   <g id="background">
     <rect x="0" y="0" width="{aw:.2f}" height="{ah:.2f}" fill="{hex_to_svg_rgb(bg)}"/>
@@ -127,12 +209,16 @@ def build_svg(spec: dict, spec_id: str) -> str:
     <!-- Brand zone: top-center -->
     <text x="{aw/2:.2f}" y="{b_pt + 36:.2f}"
           text-anchor="middle" font-size="11" fill="{hex_to_svg_rgb(secondary)}"
-          letter-spacing="2">{brand.upper()}</text>
+          letter-spacing="2">
+      <tspan>{brand.upper()}</tspan>
+    </text>
 
-    <!-- Product name: center -->
+    <!-- Product name: center (multi-line reflow) -->
     <text x="{aw/2:.2f}" y="{aw/2:.2f}"
           text-anchor="middle" font-size="22" font-weight="bold"
-          fill="{hex_to_svg_rgb(text_dark)}">{product}</text>
+          fill="{hex_to_svg_rgb(text_dark)}">
+      {build_tspan_lines(wrap_text(product, 22), aw/2, aw/2, 22)}
+    </text>
 
     <!-- Variant -->
     {("<text x=\"{{aw/2:.2f}}\" y=\"{{aw/2 + 24:.2f}}\" "
@@ -141,7 +227,9 @@ def build_svg(spec: dict, spec_id: str) -> str:
 
     <!-- Net volume: bottom-left (inside safe zone) -->
     <text x="{b_pt + 12:.2f}" y="{ah - b_pt - 12:.2f}"
-          font-size="9" fill="{hex_to_svg_rgb(secondary)}">{net_volume}</text>
+          font-size="9" fill="{hex_to_svg_rgb(secondary)}">
+      <tspan>{net_volume}</tspan>
+    </text>
   </g>
 
   <!-- LAYER: barcode -->

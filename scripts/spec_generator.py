@@ -15,6 +15,7 @@ from pathlib import Path
 
 SKILL_DIR = Path.home() / ".claude" / "skills" / "label-design"
 SPECS_DIR = SKILL_DIR / "specs"
+TEMPLATES_DIR = SKILL_DIR / "brand_templates"
 
 
 def generate_spec_id(brand: str, product: str, seed: str = "") -> str:
@@ -49,6 +50,41 @@ def resolve_collision(spec_id: str) -> str:
     while spec_id_exists(f"{spec_id}-{counter}"):
         counter += 1
     return f"{spec_id}-{counter}"
+
+
+def load_brand_template(brand: str) -> dict | None:
+    """
+    Load a brand-specific template YAML if one exists in brand_templates/.
+
+    Template files are named {brand_slug}.yaml and auto-applied during spec creation
+    to ensure brand-level consistency (colors, fonts, logo paths) across all products.
+    Returns None if no matching template is found.
+    """
+    brand_slug = slugify(brand)
+    template_path = TEMPLATES_DIR / f"{brand_slug}.yaml"
+    if not template_path.exists():
+        return None
+    with open(template_path, encoding="utf-8") as f:
+        return yaml.safe_load(f)
+
+
+def apply_template(base_spec: dict, template: dict) -> dict:
+    """
+    Deep-merge a brand template into a base spec.
+    Template values under 'content', 'design', 'color_palette' take precedence
+    over base spec values, enabling brand-wide defaults without overriding
+    product-specific content.
+    """
+    # Deep-merge strategy: template wins for nested dicts
+    merged = {**base_spec}
+    for key in ["content", "design", "color_palette", "typography"]:
+        if key in template:
+            merged[key] = {**base_spec.get(key, {}), **template[key]}
+    # Always preserve product-specific overrides in base_spec
+    for key in base_spec:
+        if key not in merged:
+            merged[key] = base_spec[key]
+    return merged
 
 
 def write_spec(spec_data: dict, spec_id: str) -> Path:
@@ -187,6 +223,11 @@ if __name__ == "__main__":
                 "product": args.product,
             },
         }
+        # Auto-apply brand template if one exists
+        brand_template = load_brand_template(args.brand)
+        if brand_template:
+            spec_data = apply_template(spec_data, brand_template)
+            print(f"Applied brand template for '{args.brand}'", file=sys.stderr)
         path = write_spec(spec_data, spec_id)
         print(spec_id)
         print(f"Full path: {path}")

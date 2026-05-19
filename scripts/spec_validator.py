@@ -96,12 +96,19 @@ def validate_spec(spec_id: str) -> ValidationResult:
             f"Typography uses {len(type_families)} type families (max 3 recommended)."
         )
 
-    # Contrast check (simplified — would need actual color values)
+    # Contrast check — CRITICAL for locked specs
     contrast = spec.get("contrast_ratio")
+    status = spec.get("status", "draft")
     if contrast is not None and contrast < 4.5:
-        result.warnings.append(
-            f"Contrast ratio {contrast}:1 is below 4.5:1 minimum for body text accessibility."
-        )
+        if status == "locked":
+            result.hard_failures.append(
+                f"Contrast ratio {contrast}:1 is below 4.5:1 minimum for WCAG AA accessibility. "
+                "Fix contrast before locking the spec."
+            )
+        else:
+            result.warnings.append(
+                f"Contrast ratio {contrast}:1 is below 4.5:1 minimum for body text accessibility."
+            )
 
     # Barcode quiet zone
     barcode_quiet = spec.get("barcode_quiet_zone")
