@@ -31,10 +31,14 @@ def spec_to_dimensions(spec: dict) -> tuple[float, float, float, float]:
     height = float(dims.get("height", 4))
     unit = dims.get("unit", "inches")
     bleed = float(label.get("bleed", 0.125))
-    # Clamp bleed to a sane print range — spec values > 0.5" are likely errors
+    # Clamp bleed to 0.5 INCHES (the sane print range). The bleed field
+    # is always specified in inches regardless of the dimensions.unit —
+    # bleed is a print-production constant, not a dimensional measurement.
+    # bleeds > 0.5" are almost always spec errors; bleeds <= 0.5" pass
+    # through unchanged.
     bleed = min(bleed, 0.5)
 
-    # Convert to points (72pt / inch)
+    # Convert all dimensions to points (72pt / inch)
     if unit == "inches":
         w_pt = width * 72
         h_pt = height * 72
@@ -42,7 +46,7 @@ def spec_to_dimensions(spec: dict) -> tuple[float, float, float, float]:
     elif unit == "mm":
         w_pt = width * 72 / 25.4
         h_pt = height * 72 / 25.4
-        b_pt = bleed * 72 / 25.4
+        b_pt = bleed * 72
     else:
         w_pt = width * 72
         h_pt = height * 72
@@ -155,9 +159,6 @@ def build_svg(spec: dict, spec_id: str) -> str:
     height = float(dims.get("height", 4))
     unit = dims.get("unit", "inches")
     bleed = float(label.get("bleed", 0.125))
-    # Clamp bleed to a sane print range — spec values > 0.5" are likely errors
-    bleed = min(bleed, 0.5)
-
     content = spec.get("content", {})
     color = spec.get("color_palette", {})
 
@@ -221,8 +222,8 @@ def build_svg(spec: dict, spec_id: str) -> str:
     </text>
 
     <!-- Variant -->
-    {("<text x=\"{{aw/2:.2f}}\" y=\"{{aw/2 + 24:.2f}}\" "
-       "text-anchor=\"middle\" font-size=\"12\" fill=\"{{hex_to_svg_rgb(secondary)}}\">{{variant}}</text>"
+    {(f'<text x="{aw/2:.2f}" y="{aw/2 + 24:.2f}" '
+       f'text-anchor="middle" font-size="12" fill="{hex_to_svg_rgb(secondary)}">{variant}</text>'
        if variant else "")}
 
     <!-- Net volume: bottom-left (inside safe zone) -->
@@ -265,6 +266,111 @@ def build_svg(spec: dict, spec_id: str) -> str:
     return svg
 
 
+def _coerce_spec(spec):
+    """Coerce YAML-loaded spec values to their expected scalar types.
+
+    ``yaml.safe_load`` faithfully returns whatever the file contains, so a
+    spec with ``content.brand: {a: 1}`` produces a dict where the renderer
+    later calls ``.upper()`` (AttributeError), and ``label.dimensions.width:
+    abc`` produces a string where the renderer calls ``float()`` (ValueError).
+    Coerce each known field in place so every downstream call site sees the
+    type it expects; missing keys keep their defaults (set by ``.get`` in
+    ``build_svg`` / ``spec_to_dimensions``).
+    """
+    if not isinstance(spec, dict):
+        return spec
+
+    # Container fields are always accessed via .get(...) in build_svg /
+    # render_micrographics_layer; if any of them is not a dict (e.g. a YAML
+    # scalar), coerce to an empty dict so downstream calls return their
+    # documented defaults instead of crashing.
+    for key in ("label", "content", "color_palette", "typography", "micrographics"):
+        if key in spec and not isinstance(spec[key], dict):
+            spec[key] = {}
+
+    # micrographics.level / placement are compared to and concatenated with
+    # strings in render_micrographics_layer; coerce non-strings to safe defaults.
+    mg = spec.get("micrographics")
+    if isinstance(mg, dict):
+        if "level" in mg and not isinstance(mg["level"], str):
+            mg["level"] = "none"
+        if "placement" in mg and not isinstance(mg["placement"], str):
+            mg["placement"] = "border"
+        if "color" in mg and not isinstance(mg["color"], str):
+            mg["color"] = "#888888"
+        if "texts" in mg:
+            texts = mg["texts"]
+            if isinstance(texts, list):
+                mg["texts"] = [t if isinstance(t, str) else "" for t in texts]
+            elif not isinstance(texts, list):
+                mg["texts"] = []
+
+    # Numeric label fields: coerce to float, fall back to a default on
+    # TypeError (None / dict / list) or ValueError (non-numeric string).
+    label = spec.get("label")
+    if isinstance(label, dict):
+        # nested container — same coercion as top-level
+        if "dimensions" in label and not isinstance(label["dimensions"], dict):
+            label["dimensions"] = {}
+        dims = label.get("dimensions")
+        if isinstance(dims, dict):
+            for key, default in (("width", 3), ("height", 4)):
+                if key not in dims:
+                    continue
+                try:
+                    dims[key] = float(dims[key])
+                except (TypeError, ValueError):
+                    dims[key] = float(default)
+            if "unit" in dims and not isinstance(dims["unit"], str):
+                dims["unit"] = "inches"
+        if "bleed" in label:
+            try:
+                float(label["bleed"])
+            except (TypeError, ValueError):
+                label["bleed"] = 0.125
+
+    # Content fields must be strings: ``brand`` is fed to ``.upper()``,
+    # ``product`` to ``.split()``, and the rest are interpolated into SVG.
+    content = spec.get("content")
+    if isinstance(content, dict):
+        for key in ("brand", "product", "variant", "net_volume"):
+            if key not in content:
+                continue
+            value = content[key]
+            if not isinstance(value, str):
+                content[key] = "" if value is None else str(value)
+
+    # Color palette values are passed straight into ``hex_to_svg_rgb`` which
+    # calls ``.lstrip("#")`` on them — any non-string raises ``AttributeError``.
+    # Replace non-strings with the documented default; missing keys are fine
+    # because ``.get`` returns those same defaults at the call site.
+    color = spec.get("color_palette")
+    if isinstance(color, dict):
+        for key, default in (
+            ("background", "#FFFFFF"),
+            ("primary", "#1A1A1A"),
+            ("secondary", "#666666"),
+            ("text_dark", "#1A1A1A"),
+        ):
+            if key in color and not isinstance(color[key], str):
+                color[key] = default
+
+    # ``typography.families`` is iterated by ``build_google_fonts_style`` and
+    # each element is fed to ``str.replace``; coerce non-string entries (or a
+    # whole-list non-list) to a safe list of strings.
+    typography = spec.get("typography")
+    if isinstance(typography, dict) and "families" in typography:
+        families = typography["families"]
+        if isinstance(families, list):
+            typography["families"] = [
+                f if isinstance(f, str) else "" for f in families
+            ]
+        elif not isinstance(families, list):
+            typography["families"] = []
+
+    return spec
+
+
 def render_svg(spec_id: str, dry_run: bool = False) -> Path | None:
     """Render spec to SVG file. Returns path or None on failure."""
     path = SPECS_DIR / f"{spec_id}.yaml"
@@ -274,6 +380,14 @@ def render_svg(spec_id: str, dry_run: bool = False) -> Path | None:
 
     with open(path, encoding="utf-8") as f:
         spec = yaml.safe_load(f)
+
+    # yaml.safe_load may return None / scalar / list if the YAML body doesn't
+    # parse to a mapping; the renderer requires a dict, so coerce non-mappings
+    # to an empty dict (which triggers all the documented defaults).
+    if not isinstance(spec, dict):
+        spec = {}
+
+    spec = _coerce_spec(spec)
 
     status = spec.get("status", "draft")
     if status not in ("approved", "locked"):

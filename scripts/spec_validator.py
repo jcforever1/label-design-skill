@@ -43,6 +43,12 @@ def validate_spec(spec_id: str) -> ValidationResult:
 
     with open(path, encoding="utf-8") as f:
         spec = yaml.safe_load(f)
+    if not isinstance(spec, dict):
+        return ValidationResult(
+            hard_failures=[
+                f"Invalid spec: expected a YAML mapping, got {type(spec).__name__}."
+            ]
+        )
 
     result = ValidationResult()
 
@@ -58,7 +64,15 @@ def validate_spec(spec_id: str) -> ValidationResult:
         result.hard_failures.append(f"Safe zone {safe_zone}\" is below minimum 0.125\"")
 
     # Barcode validation
-    barcode = spec.get("content", {}).get("barcode", "")
+    content = spec.get("content")
+    if not isinstance(content, dict):
+        content = {}
+    barcode = content.get("barcode", "")
+    if not isinstance(barcode, str):
+        # YAML may yield bool / int / float / list for the barcode field; the
+        # contract for this field is a string ("" / "placeholder" / "GS1..."),
+        # so treat non-string values as "no barcode set".
+        barcode = ""
     if barcode and barcode != "placeholder" and not barcode.startswith("GS1"):
         result.hard_failures.append(
             f"Barcode '{barcode}' appears to be a fake barcode number. "
